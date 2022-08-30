@@ -7,7 +7,7 @@ RUN Rscript -e "install.packages(c('shinyBS','shinydashboard','shinythemes','shi
 
 # Copy required files
 COPY www /srv/shiny-server/shellfish/www
-COPY Data /srv/shiny-server/shellfish/data
+COPY data /srv/shiny-server/shellfish/data
 COPY README.md /srv/shiny-server/shellfish/
 COPY global.R /srv/shiny-server/shellfish/
 COPY server.R /srv/shiny-server/shellfish/
