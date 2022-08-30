@@ -405,7 +405,7 @@ server <- function(input, output, session) {
     p<-ggplot(RecInBounds(),aes(x=Year,y=LPUE))+
       geom_jitter(size = 0.1)+
       geom_smooth(method = "lm")+
-      scale_x_continuous(breaks = minY:maxY)+
+      scale_x_continuous(breaks = seq(minY,maxY,1))+
       labs(y=paste0("LPUE","(",unique(RecInBounds()$units),")"))+
       theme_bw()+
       theme(
