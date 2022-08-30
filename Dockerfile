@@ -8,9 +8,11 @@ RUN Rscript -e "install.packages(c('shinyBS','shinydashboard','shinythemes','shi
 # Copy required files
 COPY www /srv/shiny-server/shellfish/www
 COPY data /srv/shiny-server/shellfish/data
+COPY lib /srv/shiny-server/shellfish/lib
 COPY README.md /srv/shiny-server/shellfish/
 COPY global.R /srv/shiny-server/shellfish/
 COPY server.R /srv/shiny-server/shellfish/
 COPY ui.R /srv/shiny-server/shellfish/
+COPY intro_text.html /srv/shiny-server/shellfish/
 
 EXPOSE 3838
