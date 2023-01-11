@@ -63,14 +63,15 @@ siderbar<- dashboardSidebar(
   sidebarMenu(
     menuItem("Sampling programmes",tabName = "Initial", icon = icon("chart-bar"),
              menuSubItem("Overview",tabName = "overview", icon = icon("home")),
+             menuSubItem("Data details",tabName = "Details", icon = icon("info-circle")),
              menuSubItem("Catch Rate Series",tabName = "Catch_Rate", icon = icon("chart-bar")),
-             menuSubItem("Length Distribution",tabName = "Length_Distribution", icon = icon("chart-area")),
-             menuSubItem("Maps",tabName = "Map", icon = icon("map-marker-alt")),
-             menuSubItem("Data details",tabName = "Details", icon = icon("info-circle"))),
+             menuSubItem("Maps of trends in Stock status",tabName = "Map", icon = icon("map-marker-alt")),
+             menuSubItem("Size Distribution",tabName = "Length_Distribution", icon = icon("chart-area"))),
     menuItem("Landings",tabName = "landings", icon = icon("chart-bar")),
     menuItem("Assessment and Advice",tabName = "Assessment", icon = icon("indent-right",lib="glyphicon"),
              menuSubItem("Malin Crab Stock Assessment",tabName = "Malin_Assessment", icon = icon("indent-right",lib="glyphicon")),
-             menuSubItem("Other Stocks",tabName = "Assessment", icon = icon("indent-right",lib="glyphicon")))
+             menuSubItem("Other Stocks",tabName = "Assessment", icon = icon("indent-right",lib="glyphicon"))),
+    menuItem("Other Information",tabName = "Oinfo", icon = icon("info-circle"))
     )
   )
   )
@@ -167,18 +168,19 @@ body<-dashboardBody(
                        background = "olive", width = NULL,
                        h4("Apply desired filters:"),
                        br(),
-                       column(3,selectInput('SpIDL',
+                       column(6,selectInput('SpIDL',
                                             'Species:',
                                             landings$SpeciesName,
                                             selected="Edible crab",
-                                            multiple = TRUE)),
+                                            multiple = TRUE),
+                              tags$div("Tip: press backspace to remove species from the filter",style = "font-size:13px")),
                        column(3,sliderInput("YearL",
                                             "Year:",
                                             min = 2004,
                                             max = maxY,
                                             value=c(2015,2018),
                                             round=TRUE,
-                                            sep = ""))
+                                            sep = "")),
                      )
               )
             ),
@@ -187,6 +189,69 @@ body<-dashboardBody(
               column(12, shinycssloaders::withSpinner(plotOutput("landingsPlot", width = 1000, 
                                                                  height=600)))
             )
+    ),
+    tabItem(tabName = "Details",
+            br(),
+            tags$p("This tab provides a brief description of the different data sources relevant to Shellfish Stocks 
+                   around Ireland. Not all data sources are currently included in the app, as work is ongoing"),
+            br(),
+            tags$b("Shellfish Surveys"),
+            HTML('<p align= "justify">Every year, the Marine Institute in collaboration with the fishing industry carry a number of scientific surveys 
+            around Ireland, mainly focusing on <i>Cerastoderma edule</i> (Cockles), <i>Ensis siliqua</i> 
+            (Razor clams) and <i>Ostrea edulis</i> (Native Oysters). The data collected during these surveys 
+            is assessed using a geostatistical model which provides important information about the biomass 
+            and size profile of the stocks. The outputs from this model, are directly reported to the industry. More information about 
+                 the different surveys carried annually is found in the "Assessment and Advice" tab</p>'),
+            br(),
+            tags$b("Sentinel Vessel Programme"),
+            HTML('<p align="justify">Since 2013 a total of approximately 80 Inshore fishing vessels 
+            around Ireland have been providing self-sample information about their daily fishing 
+            operations. The programme is administered by BIM as a pilot project funded 
+            by the Data Collection Framework. Vessels are chosen from different length 
+            and gear categories representative of fishing activities by vessels under 12 m 
+            around the Irish coast. BIM send hard copies of SVP logbooks to the Marine Institute who extract and 
+            manage the data from the SVP books, uploading it to the FEAS Inshore Database. 
+            A small number of Skippers in recent years have submitted data via a phone app 
+            directly to the Marine Institute (so called eSVP). The data recorded in the SVP logbooks includes the 
+            catches, landings and discards of several species, i.e. <i>Homarus gammarus</i> 
+            (Lobster), <i>Cancer pagurus</i> (Brown Crab), <i>Maja brachydactyla</i> (Spider Crab), 
+            <i>Necora puber</i> (Velvet Crab), <i>Buccinum undatum</i> (Whelk), <i>Ensis sp</i>. (Razor clams), 
+            <i>Cerastoderma edule</i> (Cockle) and various finfish species.  The fishing location 
+            is recorded at either ICES Statistical Rectangle or Inshore Grid Resolution and 
+            additional details such as the type and amount of bait used or vessel operating 
+            costs (i.e. fuel consumption, number of crew, hours worked.). Additionally, although 
+            to a lesser extent (every five fishing days), length frequency data for lobsters and 
+            crabs may be included.</p>'),
+            br(),
+            tags$b("Observer programme"),
+            HTML('<p align="justify">Each year since 2009, Marine Institute staff and contractors go to sea 
+                   on inshore fishing vessels to observe and record fishing activity. 
+                   About 50-80 day trips are completed annually, although this varies year 
+                   on year and was lower earlier in the time series.  The data recorded in 
+                   observer trips includes the catches, landings and discards of several species 
+                   such as <i>Homarus gammarus</i> (Lobster), <i>Cancer pagurus</i> (Brown Crab), <i>Maja brachydactyla</i> 
+                   (Spider Crab), <i>Necora puber</i> (Velvet Crab), <i>Buccinum undatum</i> (Whelk), and the bycatch 
+                   associated with these fishing events. Furthermore, all individuals or a sample 
+                   (depending on catch volume) of the target species captured  are measured to the nearest 
+                   mm and their sex is determined, providing a significant amount of valuable biological 
+                   information for these species. The observer programme provides data at the level of individual 
+                   fishing operations in contrast to fishery dependent data collection programmes which report aggregated 
+                   data. The sampling levels of 50-80 trips per year is low relative to the thousands of trips undertaken by the 
+                   Inshore fishing fleet annually. Furthermore there is high variance between vessels (related to location of fishing). 
+                   The low sampling level and high variance reduces precision and even accuracy in these data sets especially when reported 
+                   to local level where the data supports are diluted.</p>'),
+            br(),
+            tags$b("Skipper Self-Sampling programme"),
+            HTML('<p align="justify">Since 2021, a number of commercial inshore boats around the Irish coast report daily information on a haul by haul level on 
+            catches, landings and discards,as well as biological information of several species. This programme is administered fully by the MI 
+                   and the information provided enhances both the resolution (haul-by haul), and quantity (number of trips) of the SVP and observer programme respectively.
+                   As the time-series of this programme is still short, data from this programme is not yet included in the Shellfish Fisheries app.</p>'),
+            br(),
+            tags$b("Port Sampling"),
+            HTML('<p align= "justify">As part of the European Union (EU) Data Collection Framework (DCF) (or previous versions of it), since the early 90s, the Marine Institute has been requested to report catch sampling 
+            information to aid in the assessment of fish stocks.This generally include both commercial at sea sampling and port sampling. In the case of Shellfish stocks, port samples 
+                   provide valuable data related to the size distribution and biological information of landings and the area (at ICES Rectangle level) where fishing occured. Some of the species routinely sampled around Irish harbours include <i>Pecten maximus</i> (Scallops), 
+                   <i>Buccinum undatum</i> (whelk) or <i>Cancer pagurus</i> (Brown crab) among others.</p>')
     ),
     tabItem(tabName = "Catch_Rate",
             fluidRow(
@@ -229,90 +294,6 @@ body<-dashboardBody(
                               tags$br("*VPUE= V-Notched per unit of Effort;  OPUE= Oversized per unit of Effort",style = "font-size:15px")))
               )
             ),
-    tabItem(tabName = "Length_Distribution",
-            fluidRow(
-              column(12,
-                     box(
-                       background = "olive", width = NULL,
-                       h4("Apply desired filters:"),
-                       br(),
-                       column(3,selectInput('SpID2',
-                                            'Species:',
-                                            bio$CommonName,
-                                            choices = c("EUROPEAN LOBSTER",
-                                                        "EDIBLE CRAB UNSEXED"))),
-                       column(3,sliderInput("Year2",
-                                            "Year:",
-                                            min = 2015,
-                                            max = maxY,
-                                            round=TRUE,
-                                            value=c(2016,2018),
-                                            sep = "")),
-                       column(3,sliderInput("Size",
-                                            "Size:",
-                                            min = 0,
-                                            max = 600,
-                                            value=c(60,400),
-                                            sep = "")),
-                       column(3,checkboxGroupInput('SexID', 
-                                                   'Sex:',
-                                                   bio$SexID,
-                                                   choices = c("Female","Male"),
-                                                   inline = TRUE)),
-                       column(3,checkboxGroupInput('DiscardedYN', 
-                                                   'Discard or Landed:',
-                                                   bio$DiscardedYN,
-                                                   choices = c("Discarded",
-                                                               "Landed"),
-                                                   inline = TRUE)),
-                     )
-                     )
-              ),
-            br(),
-            fluidRow(
-              column(12, shinycssloaders::withSpinner(plotOutput("plot2", width = 1000, 
-                                                                 height=600)),
-                     tags$div("*Vertical green dashed line indicating Minimum and Maximum Landing Size",style = "font-size:15px"))
-            )
-    ),
-    tabItem(tabName = "Details",
-            tags$b("Sentinel Vessel Programme"),
-            tags$p("Since 2013 a total of approximately 80 Inshore fishing vessels 
-            around Ireland have been providing self-sample information about their daily fishing 
-            operations. The programme is administered by BIM as a pilot project funded 
-            by the Data Collection Framework. Vessels are chosen from different length 
-            and gear categories representative of fishing activities by vessels under 12 m 
-            around the Irish coast. BIM send hard copies of SVP logbooks to the Marine Institute who extract and 
-            manage the data from the SVP books, uploading it to the FEAS Inshore Database. 
-            A small number of Skippers in recent years have submitted data via a phone app 
-            directly to the Marine Institute (so called eSVP). The data recorded in the SVP logbooks includes the 
-            catches, landings and discards of several species, i.e. Homarus gammarus 
-            (Lobster), Cancer pagurus (Brown Crab), Maja brachydactyla (Spider Crab), 
-            Necora puber (Velvet Crab), Buccinum undatum (Whelk), Ensis sp. (Razor clams), 
-            Cerastoderma edule (Cockle) and various finfish species.  The fishing location 
-            is recorded at either ICES Statistical Rectangle or Inshore Grid Resolution and 
-            additional details such as the type and amount of bait used or vessel operating 
-            costs (i.e. fuel consumption, number of crew, hours worked.). Additionally, although 
-            to a lesser extent (every five fishing days), length frequency data for lobsters and 
-            crabs may be included.",style="text-align: justify"),
-            tags$b("Observer programme"),
-            tags$p("Each year since 2009, Marine Institute staff and contractors go to sea 
-                   on inshore fishing vessels to observe and record fishing activity. 
-                   About 50-80 day trips are completed annually, although this varies year 
-                   on year and was lower earlier in the time series.  The data recorded in 
-                   observer trips includes the catches, landings and discards of several species 
-                   such as Homarus gammarus (Lobster), Cancer pagurus (Brown Crab), Maja brachydactyla 
-                   (Spider Crab), Necora puber (Velvet Crab), Buccinum undatum (Whelk), and the bycatch 
-                   associated with these fishing events. Furthermore, all individuals or a sample 
-                   (depending on catch volume) of the target species captured  are measured to the nearest 
-                   mm and their sex is determined, providing a significant amount of valuable biological 
-                   information for these species. The observer programme provides data at the level of individual 
-                   fishing operations in contrast to fishery dependent data collection programmes which report aggregated 
-                   data. The sampling levels of 50-80 trips per year is low relative to the thousands of trips undertaken by the 
-                   Inshore fishing fleet annually. Furthermore there is high variance between vessels (related to location of fishing). 
-                   The low sampling level and high variance reduces precision and even accuracy in these data sets especially when reported 
-                   to local level where the data supports are diluted.",style="text-align: justify")
-    ),
     tabItem(tabName = "Map",
             fluidRow(
               column(12,
@@ -353,13 +334,66 @@ body<-dashboardBody(
                      tags$p("The Scatterplot on the right, displays the raw LPUE used for this colour assignation, and it is 
                             subsetted to particular areas when the users zoom in/out of the map",
                             style="text-align: justify"),
-                     tags$p(HTML("<b>Some ICES rectangles contain few data points to estimate reliable trends,
-                            so caution should be taken when extracting conclusions from particular areas. Additionally, 
-                                 some rectangles might be missing the latest years of the time series.</b>"),
+                     tags$p(HTML("<b> Only ICES rectangles with a sufficient time series of data are displayed. Still, 
+                                  certain ICES rectangles on given years contain few data points to estimate reliable trends,
+                                 so caution should be taken when extracting conclusions from particular areas.</b>"),
                             style="text-align: justify; color:red")),
               column(6, shinycssloaders::withSpinner(plotlyOutput("scatter_plot", height=300)))
-              )
-            ),
+            )
+    ),
+    tabItem(tabName = "Length_Distribution",
+            fluidRow(
+              column(12,
+                     box(
+                       background = "olive", width = NULL,
+                       h4("Apply desired filters:"),
+                       br(),
+                       column(3,selectInput('SpID2',
+                                            'Species:',
+                                            bio$CommonName,
+                                            choices = c("EUROPEAN LOBSTER",
+                                                        "EDIBLE CRAB UNSEXED")),
+                              checkboxGroupInput('SexID', 
+                                                 'Sex:',
+                                                 bio$SexID,
+                                                 choices = c("Female","Male"),
+                                                 inline = TRUE)),
+                       column(3,sliderInput("Year2",
+                                            "Year:",
+                                            min = 2015,
+                                            max = maxY,
+                                            round=TRUE,
+                                            value=c(2016,2018),
+                                            sep = ""),
+                              sliderInput("Size",
+                                          "Size:",
+                                          min = 0,
+                                          max = 300,
+                                          value=c(60,250),
+                                          sep = "")),
+                       column(3,checkboxGroupInput('DiscardedYN', 
+                                                   'Discard or Landed:',
+                                                   bio$DiscardedYN,
+                                                   choices = c("Discarded",
+                                                               "Landed"),
+                                                   inline = TRUE)),
+                       column(3,checkboxGroupInput('VNotchedYN', 
+                                                   'V-Notched:',
+                                                   bio$VNotchedYN,
+                                                   choices = c("Yes",
+                                                               "No",
+                                                               "Not Answered"),
+                                                   inline = TRUE))
+                     )
+                     )
+              ),
+            br(),
+            fluidRow(
+              column(12, shinycssloaders::withSpinner(plotOutput("plot2", width = 1000, 
+                                                                 height=600)),
+                     tags$div("*Vertical green dashed line indicating Minimum and Maximum Landing Size",style = "font-size:15px"))
+            )
+    ),
     tabItem(tabName = "Malin_Assessment",
             tags$div(
               tags$image(src = "species/Edible crab.png",height = 300, width = 300,align = 'center'),
@@ -466,18 +500,23 @@ body<-dashboardBody(
     ),
     tabItem(tabName = "Assessment",
             fluidRow(
-              column(6,
+              column(12,
                      box(
                        background = "olive", width = NULL,
-                       column(6,
+                       column(3,
+                              selectInput("SpY",
+                                          "Year:",
+                                          choices = c("SELECT YEAR",a_a$Year),
+                                          selected = "SELECT YEAR")),
+                       column(3,
                               selectInput("SpIDA",
                                           "Species:",
-                                          choices = c("SELECT SPECIES",a_a$Specie),
+                                          choices = c("SELECT SPECIES",unique(a_a$Specie)),
                                           selected = "SELECT SPECIES")),
-                       column(6,
+                       column(3,
                               selectInput("SpArea",
                                           "Area:",
-                                          choices = c("SELECT AREA",a_a$Area),
+                                          choices = c("SELECT AREA",unique(a_a$Area)),
                                           selected = "SELECT AREA"))
                      ))
             ),
@@ -537,6 +576,33 @@ body<-dashboardBody(
                         # )
               )
             )
+            ),
+    tabItem(tabName = "Oinfo",
+            br(),
+            tags$p("This tab provides a series of usefull links to other sources of information relevant to Irish Fisheries"),
+            br(),
+            tags$b("Shellfish Stocks and Fisheries Review 2021: an assessment of selected stocks"),
+            br(),
+            tags$a(
+              "https://oar.marine.ie/handle/10793/1744",
+              target = "_blank",
+              href = "https://oar.marine.ie/handle/10793/1744"),
+            br(),
+            br(),
+            tags$b("Atlas: Commercial fisheries for shellfish around Ireland"),
+            br(),
+            tags$a(
+              "https://oar.marine.ie/handle/10793/1243",
+              target = "_blank",
+              href = "https://oar.marine.ie/handle/10793/1243"),
+            br(),
+            br(),
+            tags$b("Natura 2000 Network maps"),
+            br(),
+            tags$a(
+              "https://natura2000.eea.europa.eu/",
+              target = "_blank",
+              href = "https://natura2000.eea.europa.eu/")
             )
     )
   )
