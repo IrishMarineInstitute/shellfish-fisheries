@@ -311,6 +311,7 @@ server <- function(input, output, session) {
       filter(.$Size <= input$Size[2]) %>%
       filter(.$SexID %in% c(input$SexID)) %>%
       filter(.$DiscardedYN %in% c(input$DiscardedYN)) %>%
+      filter(.$VNotchedYN %in% c(input$VNotchedYN)) %>%
     ggplot(.,
            aes(x=Size,fill=DiscardedYN))+
       geom_histogram(binwidth = 1,position = "identity",alpha=.7,colour="black")+
@@ -322,7 +323,7 @@ server <- function(input, output, session) {
       scale_colour_lancet()+
       scale_fill_lancet()+
       expand_limits(y=c(0,0))+
-      ylab("Number of Individuals")+xlab("Length (mm)")+
+      ylab("Number of Individuals")+xlab("Size (mm)")+
       theme_bw()+
       theme(axis.title.x = element_text(size=17.5, face="bold",margin = margin(t = 10, r = 0, b = 0, l = 0)),
             axis.title.y = element_text(size=17.5, face="bold",margin = margin(t = 0, r = 10, b = 0, l = 0)),
@@ -343,6 +344,7 @@ server <- function(input, output, session) {
   
   
   #Leaflet section
+ # pal<-reactiveValues()
   
   pal <- colorNumeric(
     palette = "RdYlGn",
@@ -350,9 +352,10 @@ server <- function(input, output, session) {
     na.color = "transparent")
   
   output$map <- renderLeaflet({
+    
     leaflet() %>%
       setView(lng = -6.2, lat = 53.3, zoom =5.5 ) %>%
-      addProviderTiles(providers$Esri.OceanBasemap) %>%
+      addProviderTiles(providers$Esri.WorldTerrain) %>% #Esri.OceanBasemap
       addLegend(pal = pal, 
                 values = ICES_LPUE$slp_std, 
                 opacity = 1, 
@@ -428,35 +431,49 @@ server <- function(input, output, session) {
  
   #Reactive selectInput
   observe({
-    tmp<-a_a[a_a$Specie == input$SpIDA,]
     
+    tmp<-a_a$Specie[a_a$Year == input$SpY]
+    
+    updateSelectInput(session, 
+                      "SpIDA",
+                      "Species:",
+                      choices = c("SELECT SPECIES",unique(tmp)),
+                      selected = "SELECT SPECIES")
+  })
+  
+  observe({
+    tmpY<-a_a[a_a$Year == input$SpY,]
+    tmpS<-tmpY$Area[tmpY$Specie == input$SpIDA]
     updateSelectInput(session, 
                       "SpArea",
                       "Area:",
-                      choices = c("SELECT AREA",tmp$Area),
+                      choices = c("SELECT AREA",unique(tmpS)),
                       selected = "SELECT AREA")
-    
-    })
+  })
   
   # Text output
   output$stock_text <- renderText({
-    paste0(a_a[a_a$Specie == input$SpIDA &
+    paste0(a_a[a_a$Year == input$SpY &
+                 a_a$Specie == input$SpIDA &
                  a_a$Area == input$SpArea,"fishery"])
     })
   
   output$advice_text<- renderText({
-    paste0(a_a[a_a$Specie == input$SpIDA &
+    paste0(a_a[a_a$Year == input$SpY &
+                 a_a$Specie == input$SpIDA &
                  a_a$Area == input$SpArea,"ManagementAdvice"])
   })
   
   
   output$survey_text <- renderText({
-    paste0(a_a[a_a$Specie == input$SpIDA &
+    paste0(a_a[a_a$Year == input$SpY &
+                 a_a$Specie == input$SpIDA &
                  a_a$Area == input$SpArea,"Assessment"])
   })
   
   output$Aoutput_text <- renderText({
-    paste0(a_a[a_a$Specie == input$SpIDA &
+    paste0(a_a[a_a$Year == input$SpY &
+                 a_a$Specie == input$SpIDA &
                  a_a$Area == input$SpArea,"Outputs"])
   })
   
@@ -472,15 +489,15 @@ server <- function(input, output, session) {
   #  
   #})
   
-  stock <- reactive ({
-    if (!is.null(input$SpIDA) & !is.null(input$SpArea)) {
-      tmp<-paste(unique(input$SpIDA), unique(input$SpArea), sep=" ")
-      return(tmp)
-    }
-    else {
-      return()
-    }
-    })
+  #stock <- reactive ({
+  #  if (!is.null(input$SpIDA) & !is.null(input$SpArea)) {
+  #    tmp<-paste(unique(input$SpIDA), unique(input$SpArea), sep=" ")
+  #    return(tmp)
+  #  }
+  #  else {
+  #    return()
+  #  }
+  #  })
 
   #output$species <- renderImage({
   #  image_file <- paste0("www/species/",input$SpIDA, 
@@ -492,21 +509,21 @@ server <- function(input, output, session) {
   output$survey.zones <- renderImage({
     
     image_path1<-file.path("www/Assessment and advice",
-                          paste(input$SpIDA,input$SpArea,sep= "/"), 
+                          paste(input$SpIDA,input$SpArea,input$SpY,sep= "/"), 
                           "Survey_zones.png")
     return(list(src = image_path1, filetype = "image/png",width = 300))
   }, deleteFile = FALSE)
   
   output$display.assessment <- renderImage({
     image_path2<-file.path("www/Assessment and advice",
-                          paste(input$SpIDA,input$SpArea,sep= "/"), 
+                          paste(input$SpIDA,input$SpArea,input$SpY,sep= "/"), 
                           "BiomassMap_from_AbundanceDensityLW.png")
     return(list(src = image_path2, filetype = "image/png",width = 300))
   }, deleteFile = FALSE)
   
   output$display.size <- renderImage({
     image_path3<-file.path("www/Assessment and advice",
-                          paste(input$SpIDA,input$SpArea,sep= "/"), 
+                          paste(input$SpIDA,input$SpArea,input$SpY,sep= "/"), 
                           "Size_distribution_abDensity.png")
     return(list(src = image_path3, filetype = "image/png",width = 500))
   }, deleteFile = FALSE)
