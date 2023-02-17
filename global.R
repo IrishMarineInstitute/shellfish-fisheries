@@ -54,10 +54,10 @@ bio<-read.csv("data/Data_prep_Output/bio_summary.csv")
 #Summary statistics
 dat_sta<-read.csv("data/Data_prep_Output/Programme_summary.csv")
 minY<-as.numeric(min(dat_sta$Year))
-maxY<-2020#as.numeric(max(dat_sta$Year))
+maxY<-2021#as.numeric(max(dat_sta$Year))
 
 #Landings table
-landings<-read.csv("data/Data_prep_Output/Landings_Table_2021Update.csv")
+landings<-read.csv("data/Data_prep_Output/Landings_Table_2022.csv")
 landings <- landings %>%
   pivot_longer(cols = starts_with("X"),
                names_to = "Year",
