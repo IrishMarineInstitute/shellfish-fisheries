@@ -15,7 +15,7 @@ options(spinner.color="green",
         spinner.type=4)
 
 # Header ------------------------------------------------------------------
-header<- dashboardHeader(title = HTML("Irish Shellfish Fisheries DataBase Visualization"),
+header<- dashboardHeader(title = HTML("Irish Shellfish Fisheries App Visualization"),
                          disable = FALSE,
                          titleWidth = 600, 
                                dropdownMenuCustom(type = 'message',
@@ -51,7 +51,7 @@ header<- dashboardHeader(title = HTML("Irish Shellfish Fisheries DataBase Visual
                          )
 
 header$children[[2]]$children[[2]] <- header$children[[2]]$children[[1]]
-header$children[[2]]$children[[1]] <- tags$a(href='https://www.marine.ie/Home/home',
+header$children[[2]]$children[[1]] <- tags$a(href='https://www.marine.ie',
                                              tags$img(src='logo/MI.4.png',height='40',width='228.6', align = 'left'),
                                              target = '_blank') #,height='67',width='228.6', align = 'left'
 
@@ -69,8 +69,13 @@ siderbar<- dashboardSidebar(
              menuSubItem("Size Distribution",tabName = "Length_Distribution", icon = icon("chart-area"))),
     menuItem("Landings",tabName = "landings", icon = icon("chart-bar")),
     menuItem("Assessment and Advice",tabName = "Assessment", icon = icon("indent-right",lib="glyphicon"),
-             menuSubItem("Malin Crab Stock Assessment",tabName = "Malin_Assessment", icon = icon("indent-right",lib="glyphicon")),
-             menuSubItem("Other Stocks",tabName = "Assessment", icon = icon("indent-right",lib="glyphicon"))),
+             ##menuSubItem("Malin Crab Stock Assessment",tabName = "Malin_Assessment", icon = icon("indent-right",lib="glyphicon")),
+             menuSubItem("Bivalve Stocks",tabName = "BivalveAssessment", icon = tags$img(src='species/icon/Bivalve.ico',
+                                                                                  height='15%',width='15%')),
+             menuSubItem("Crustacean Stocks",tabName = "CrustaceanAssessment", icon = tags$img(src='species/icon/Crustacean2.png',
+                                                                                     height='15%',width='15%')),
+             menuSubItem("Gastropods Stocks",tabName = "GastropodAssessment", icon = tags$img(src='species/icon/Gastropods.ico',
+                                                                                     height='15%',width='15%'))),
     menuItem("Other Information",tabName = "Oinfo", icon = icon("info-circle"))
     )
   )
@@ -106,7 +111,7 @@ body<-dashboardBody(
            style = "color:darkblue" , align = "center" ) ,
         tags$hr()
     ),
-    tags$div(h1(paste0("Shellfish Fisheries Database App")),
+    tags$div(h1(paste0("Shellfish Fisheries App")),
              style="text-align: center"),
     tags$div(h3(paste("A brief summary of the Lobster and Crab sampling programmes around Ireland")),#in,maxY,sep=" ")),
              style="text-align: center"),
@@ -187,13 +192,13 @@ body<-dashboardBody(
             br(),
             fluidRow(
               column(12, shinycssloaders::withSpinner(plotOutput("landingsPlot", width = 1000, 
-                                                                 height=600)))
+                                                                 height=600)),align="center")
             )
     ),
     tabItem(tabName = "Details",
             br(),
-            tags$p("This tab provides a brief description of the different data sources relevant to Shellfish Stocks 
-                   around Ireland. Not all data sources are currently included in the app, as work is ongoing"),
+            HTML("<p>This tab provides a brief description of the different data sources relevant to Shellfish Stocks 
+                   around Ireland. <b>Not all data sources are currently included in the app, as work is ongoing</b></p>"),
             br(),
             tags$b("Shellfish Surveys"),
             HTML('<p align= "justify">Every year, the Marine Institute in collaboration with the fishing industry carry a number of scientific surveys 
@@ -291,7 +296,8 @@ body<-dashboardBody(
               column(12, shinycssloaders::withSpinner(plotOutput("plot1", width = 1000, 
                                                                  height=500)),
                      tags$div("*LPUE= Landings per unit of Effort;  DPUE= Discards per unit of Effort",style = "font-size:15px",
-                              tags$br("*VPUE= V-Notched per unit of Effort;  OPUE= Oversized per unit of Effort",style = "font-size:15px")))
+                              tags$br("*VPUE= V-Notched per unit of Effort;  OPUE= Oversized per unit of Effort",style = "font-size:15px")),
+                     align="center")
               )
             ),
     tabItem(tabName = "Map",
@@ -391,7 +397,8 @@ body<-dashboardBody(
             fluidRow(
               column(12, shinycssloaders::withSpinner(plotOutput("plot2", width = 1000, 
                                                                  height=600)),
-                     tags$div("*Vertical green dashed line indicating Minimum and Maximum Landing Size",style = "font-size:15px"))
+                     tags$div("*Vertical green dashed line indicating Minimum and Maximum Landing Size",style = "font-size:15px"),
+                     align="center")
             )
     ),
     tabItem(tabName = "Malin_Assessment",
@@ -498,26 +505,29 @@ body<-dashboardBody(
               )
             )
     ),
-    tabItem(tabName = "Assessment",
+    tabItem(tabName = "BivalveAssessment",
             fluidRow(
               column(12,
                      box(
                        background = "olive", width = NULL,
                        column(3,
-                              selectInput("SpY",
-                                          "Year:",
-                                          choices = c("SELECT YEAR",a_a$Year),
-                                          selected = "SELECT YEAR")),
-                       column(3,
-                              selectInput("SpIDA",
+                              selectInput("SpBIDA",
                                           "Species:",
-                                          choices = c("SELECT SPECIES",unique(a_a$Specie)),
+                                          choices = c("SELECT SPECIES",unique(ba_a$Specie)),
                                           selected = "SELECT SPECIES")),
                        column(3,
-                              selectInput("SpArea",
+                              selectInput("SpBArea",
                                           "Area:",
-                                          choices = c("SELECT AREA",unique(a_a$Area)),
-                                          selected = "SELECT AREA"))
+                                          choices = c("SELECT AREA",unique(ba_a$Area)),
+                                          selected = "SELECT AREA")),
+                       column(3,
+                              selectInput("SpBY",
+                                          "Year:",
+                                          choices = c("SELECT YEAR",ba_a$Year),
+                                          selected = "SELECT YEAR")),
+                       column(3,
+                              imageOutput("bivalve_image", height = "50%")
+                       )
                      ))
             ),
             tabsetPanel(
@@ -530,16 +540,16 @@ body<-dashboardBody(
               ),
               tabPanel("Stock summary",
                        fluidRow(
-                         h3("The Fishery"),
                          column(width = 6, 
+                                h3("The Fishery"),
                                 div(
                                   tags$p(htmlOutput("stock_text")),
                                   style="text-align: justify")
                                 ),
-                         h3("Species Biology"),
                          column(width = 6, 
+                                h3("Species Biology"),
                                 div(
-                                  tags$p(htmlOutput("")),
+                                  tags$p(htmlOutput("bio_text")),
                                   style="text-align: justify")
                          ),
                          )
@@ -553,7 +563,7 @@ body<-dashboardBody(
                                   style="text-align: justify")
                          ),
                          column(width = 6, 
-                                imageOutput("survey.zones", height = "50%")
+                                imageOutput("survey.zones")
                          )
                          )
                        ),
@@ -563,23 +573,60 @@ body<-dashboardBody(
                                 div(
                                   tags$p(htmlOutput("Aoutput_text")),
                                   style="text-align: justify"),
-                                div(imageOutput("display.size", height = "100%"))
+                                div(imageOutput("display.size"))
                                 ),
+                         br(),
                          column(width = 6, 
-                                imageOutput("display.assessment", height = "30%")
+                                imageOutput("display.assessment")
+                                )
                          )
-                         )
-                       #,
-                         #column(width = 12, 
-                        #        imageOutput("display.size", height = "100%")
-                        # )
-                        # )
               )
             )
             ),
+    tabItem(tabName = "CrustaceanAssessment",
+            fluidRow(
+              column(12,
+                     box(
+                       background = "olive", width = NULL,
+                       column(3,
+                              selectInput("SpCIDA",
+                                          "Species:",
+                                          choices = c("SELECT SPECIES",unique(ca_a$Specie)),
+                                          selected = "SELECT SPECIES")),
+                       column(3,
+                              selectInput("SpCArea",
+                                          "Area:",
+                                          choices = c("SELECT AREA",unique(ca_a$Area)),
+                                          selected = "SELECT AREA")),
+                       column(3,
+                              imageOutput("crustacean_image", height = "50%")
+                       )
+                     )
+                     )
+              ),
+            tabsetPanel(
+              tabPanel("Management Advice",
+                       htmlOutput("C_ManagementAdvice")),
+              tabPanel("Stock summary",
+                       htmlOutput("C_StockSummary")),
+              tabPanel("Assessment",
+                       htmlOutput("C_Assessment"))
+            )
+    ),
+    tabItem(tabName = "GastropodAssessment",
+            tags$div(h1(paste0("In development")),
+                     style="text-align: center")),
     tabItem(tabName = "Oinfo",
             br(),
             tags$p("This tab provides a series of usefull links to other sources of information relevant to Irish Fisheries"),
+            br(),
+            tags$b("Shellfish Stocks and Fisheries Review 2022: an assessment of selected stocks"),
+            br(),
+            tags$a(
+              "https://oar.marine.ie/handle/10793/1814",
+              target = "_blank",
+              href = "https://oar.marine.ie/handle/10793/1814#:~:text=The%20intention%20of%20this%20annual,in%20areas%20designated%20under%20European"),
+            br(),
             br(),
             tags$b("Shellfish Stocks and Fisheries Review 2021: an assessment of selected stocks"),
             br(),
@@ -587,6 +634,14 @@ body<-dashboardBody(
               "https://oar.marine.ie/handle/10793/1744",
               target = "_blank",
               href = "https://oar.marine.ie/handle/10793/1744"),
+            br(),
+            br(),
+            tags$b("Shellfish Stocks and Fisheries Review 2019: an assessment of selected stocks"),
+            br(),
+            tags$a(
+              "https://oar.marine.ie/handle/10793/1591",
+              target = "_blank",
+              href = "https://oar.marine.ie/handle/10793/1591"),
             br(),
             br(),
             tags$b("Atlas: Commercial fisheries for shellfish around Ireland"),
@@ -602,7 +657,23 @@ body<-dashboardBody(
             tags$a(
               "https://natura2000.eea.europa.eu/",
               target = "_blank",
-              href = "https://natura2000.eea.europa.eu/")
+              href = "https://natura2000.eea.europa.eu/"),
+            br(),
+            br(),
+            tags$b("Fisheries Natura Plan for Cockle in Dundalk (2021-2025)"),
+            br(),
+            tags$a(
+              "http://www.fishingnet.ie/sea-fisheriesinnaturaareas/concludedassessments/dundalkbay-sacspa/",
+              target = "_blank",
+              href = "http://www.fishingnet.ie/sea-fisheriesinnaturaareas/concludedassessments/dundalkbay-sacspa/"),
+            br(),
+            br(),
+            tags$b("Fisheries Natura Plan for Cockle in Dundalk (2016-2020)"),
+            br(),
+            tags$a(
+              "http://www.fishingnet.ie/sea-fisheriesinnaturaareas/concludedassessments/dundalkbay-sacspa/",
+              target = "_blank",
+              href = "http://www.fishingnet.ie/sea-fisheriesinnaturaareas/concludedassessments/dundalkbay-sacspa/")
             )
     )
   )

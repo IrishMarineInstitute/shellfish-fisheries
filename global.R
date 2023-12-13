@@ -30,7 +30,8 @@ packs = c("shiny",
           "ggsci",
           "colorRamps",
           "ggrepel",
-          "rintrojs"
+          "rintrojs",
+          "fontawesome"
           )
 
 # Run the following command to verify that the required packages are installed. If some package
@@ -54,7 +55,7 @@ bio<-read.csv("data/Data_prep_Output/bio_summary.csv")
 #Summary statistics
 dat_sta<-read.csv("data/Data_prep_Output/Programme_summary.csv")
 minY<-as.numeric(min(dat_sta$Year))
-maxY<-2021#as.numeric(max(dat_sta$Year))
+maxY<-as.numeric(max(dat_sta$Year))
 
 #Landings table
 landings<-read.csv("data/Data_prep_Output/Landings_Table_2022.csv")
@@ -66,7 +67,13 @@ landings <- landings %>%
   data.frame()
 
 #Assessment and advice table
-a_a<-read.csv("data/Data_prep_Output/Assessment and Advice.csv")
+
+# Bivalves:
+ba_a<-read.csv("data/Data_prep_Output/Bivalves Assessment and Advice.csv")
+ba_a<-ba_a[order(-ba_a$Year,ba_a$Specie),]
+
+#Crustaceans:
+ca_a<-read.csv("data/Data_prep_Output/Crustacean Assessment and Advice.csv")
 
 #Loading Spatial Data
 source("./lib/01_Loading_Spatial_Data.R",

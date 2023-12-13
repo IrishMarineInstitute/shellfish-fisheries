@@ -283,6 +283,7 @@ server <- function(input, output, session) {
       geom_line(size=.5)+
       scale_colour_lancet()+
       scale_fill_lancet()+
+      scale_x_continuous(breaks=seq(min(tmp2$Year),max(tmp2$Year),by=1))+ 
       scale_y_continuous(limits = c(0,max(tmp2$Mean_rate))) +
       facet_wrap(.~SampleType,ncol = 2)+
       labs(x="Year",y=tmp2$Units,shape="Catch Type",linetype="Catch Type",
@@ -293,6 +294,7 @@ server <- function(input, output, session) {
                                         margin = margin(t = 25, r = 0, b = 0, l = 0)),
             axis.title.y = element_text(size=rel(1.4), face="bold",
                                         margin = margin(t = 0, r = 25, b = 0, l = 0)),
+            axis.text.x = element_text(size=rel(1.2),angle = 90, vjust = 0.5, hjust=1),
             legend.title = element_text(size = rel(1.4)),
             strip.text = element_text(size=rel(1.4)),
             panel.background = element_rect(fill = "aliceblue"),
@@ -429,105 +431,158 @@ server <- function(input, output, session) {
   
  #Assessment Outputs
  
-  #Reactive selectInput
+  # Bivalve assessment
+  # Reactive selectInput
   observe({
     
-    tmp<-a_a$Specie[a_a$Year == input$SpY]
+    tmp<-ba_a$Area[ba_a$Specie == input$SpBIDA]
     
     updateSelectInput(session, 
-                      "SpIDA",
-                      "Species:",
-                      choices = c("SELECT SPECIES",unique(tmp)),
-                      selected = "SELECT SPECIES")
+                      "SpBArea",
+                      "Area:",
+                      choices = c("SELECT AREA",unique(tmp)),
+                      selected = "SELECT AREA")
   })
   
   observe({
-    tmpY<-a_a[a_a$Year == input$SpY,]
-    tmpS<-tmpY$Area[tmpY$Specie == input$SpIDA]
+    tmpS<-ba_a[ba_a$Specie == input$SpBIDA,]
+    tmpA<-tmpS$Year[tmpS$Specie == input$SpBIDA]
     updateSelectInput(session, 
-                      "SpArea",
-                      "Area:",
-                      choices = c("SELECT AREA",unique(tmpS)),
-                      selected = "SELECT AREA")
+                      "SpBY",
+                      "Year:",
+                      choices = c("SELECT YEAR",tmpA),
+                      selected = "SELECT YEAR")
   })
   
   # Text output
   output$stock_text <- renderText({
-    paste0(a_a[a_a$Year == input$SpY &
-                 a_a$Specie == input$SpIDA &
-                 a_a$Area == input$SpArea,"fishery"])
+    paste0(ba_a[ba_a$Year == input$SpBY &
+                 ba_a$Specie == input$SpBIDA &
+                 ba_a$Area == input$SpBArea,"fishery"])
     })
   
+  output$bio_text <- renderText({
+    paste0(ba_a[ba_a$Year == input$SpBY &
+                 ba_a$Specie == input$SpBIDA &
+                 ba_a$Area == input$SpBArea,"Biology"])
+  })
+  
   output$advice_text<- renderText({
-    paste0(a_a[a_a$Year == input$SpY &
-                 a_a$Specie == input$SpIDA &
-                 a_a$Area == input$SpArea,"ManagementAdvice"])
+    paste0(ba_a[ba_a$Year == input$SpBY &
+                 ba_a$Specie == input$SpBIDA &
+                 ba_a$Area == input$SpBArea,"ManagementAdvice"])
   })
   
   
   output$survey_text <- renderText({
-    paste0(a_a[a_a$Year == input$SpY &
-                 a_a$Specie == input$SpIDA &
-                 a_a$Area == input$SpArea,"Assessment"])
+    paste0(ba_a[ba_a$Year == input$SpBY &
+                 ba_a$Specie == input$SpBIDA &
+                 ba_a$Area == input$SpBArea,"Assessment"])
   })
   
   output$Aoutput_text <- renderText({
-    paste0(a_a[a_a$Year == input$SpY &
-                 a_a$Specie == input$SpIDA &
-                 a_a$Area == input$SpArea,"Outputs"])
+    paste0(ba_a[ba_a$Year == input$SpBY &
+                 ba_a$Specie == input$SpBIDA &
+                 ba_a$Area == input$SpBArea,"Outputs"])
   })
   
-  
-  #Directory to look for images:
-  #stock<-reactive({
-  #  tmp<-a_a[a_a$Specie == input$SpIDA,]
-  #  tmp2<-a_a[a_a$Area == input$SpArea,]
-  #  
-  #  stock<-paste(tmp2$Specie,tmp2$Area,sep=" ")
-  #  
-  #  return(stock)
-  #  
-  #})
-  
-  #stock <- reactive ({
-  #  if (!is.null(input$SpIDA) & !is.null(input$SpArea)) {
-  #    tmp<-paste(unique(input$SpIDA), unique(input$SpArea), sep=" ")
-  #    return(tmp)
-  #  }
-  #  else {
-  #    return()
-  #  }
-  #  })
-
-  #output$species <- renderImage({
-  #  image_file <- paste0("www/species/",input$SpIDA, 
-  #                       "/Survey_zones.png")
-  #  return(list(src = image_file, filetype = "image/png",width = 300))
-  #}, deleteFile = FALSE)
-  
+  output$bivalve_image <- renderImage({
+    
+    image_path1<-file.path("www/species",
+                           paste(input$SpBIDA,".png",sep= ""))
+    return(list(src = image_path1, filetype = "image/png",width = "50%",height="50%"))
+  }, deleteFile = FALSE)
   
   output$survey.zones <- renderImage({
     
     image_path1<-file.path("www/Assessment and advice",
-                          paste(input$SpIDA,input$SpArea,input$SpY,sep= "/"), 
+                          paste(input$SpBIDA,input$SpBArea,input$SpBY,sep= "/"), 
                           "Survey_zones.png")
-    return(list(src = image_path1, filetype = "image/png",width = 300))
+      return(list(src = image_path1, filetype = "image/png",width="100%",height="100%"))
+
   }, deleteFile = FALSE)
   
   output$display.assessment <- renderImage({
     image_path2<-file.path("www/Assessment and advice",
-                          paste(input$SpIDA,input$SpArea,input$SpY,sep= "/"), 
+                          paste(input$SpBIDA,input$SpBArea,input$SpBY,sep= "/"), 
                           "BiomassMap_from_AbundanceDensityLW.png")
-    return(list(src = image_path2, filetype = "image/png",width = 300))
+    
+      return(list(src = image_path2, filetype = "image/png",width="100%",height="100%"))
   }, deleteFile = FALSE)
   
   output$display.size <- renderImage({
     image_path3<-file.path("www/Assessment and advice",
-                          paste(input$SpIDA,input$SpArea,input$SpY,sep= "/"), 
+                          paste(input$SpBIDA,input$SpBArea,input$SpBY,sep= "/"), 
                           "Size_distribution_abDensity.png")
-    return(list(src = image_path3, filetype = "image/png",width = 500))
+    return(list(src = image_path3, filetype = "image/png",width="100%",height="100%"))
   }, deleteFile = FALSE)
   
   
-}
+  # Crustaceans
+  observe({
+    
+    tmp<-ca_a$Area[ca_a$Specie == input$SpCIDA]
+    
+    updateSelectInput(session, 
+                      "SpCArea",
+                      "Area:",
+                      choices = c("SELECT AREA",unique(tmp)),
+                      selected = "SELECT AREA")
+  })
+  
+
+  output$crustacean_image <- renderImage({
+    
+    image_path1<-file.path("www/species",
+                           paste(input$SpCIDA,".png",sep= ""))
+    return(list(src = image_path1, filetype = "image/png",width = "50%",height="50%"))
+  }, deleteFile = FALSE)
+
+  
+  #Stock summary html 
+  output$C_ManagementAdvice<-renderUI({
+    
+    if(input$SpCIDA == "SELECT SPECIES") {
+      return(NULL)
+    } else {
+      if (input$SpCArea == "SELECT AREA") {
+        return(NULL)
+      }
+      return(includeHTML(file.path("www/Assessment and advice",
+                                   input$SpCIDA,
+                                   input$SpCArea,
+                                   "Management Advice.html")))
+    }
+  })
+  
+  output$C_StockSummary<-renderUI({
+    if(input$SpCIDA == "SELECT SPECIES") {
+      return(NULL)
+    } else {
+      if (input$SpCArea == "SELECT AREA") {
+        return(NULL)
+      }
+    includeHTML(file.path("www/Assessment and advice",
+                          input$SpCIDA,
+                          input$SpCArea,
+                          "Stock summary.html"))
+    }
+  })
+  
+  output$C_Assessment<-renderUI({
+    if(input$SpCIDA == "SELECT SPECIES") {
+      return(NULL)
+    } else { 
+      if (input$SpCArea == "SELECT AREA") {
+        return(NULL)
+      } else {
+        includeHTML(file.path("www/Assessment and advice",
+                              input$SpCIDA,
+                              input$SpCArea,
+                              "Assessment.html"))
+      }
+    }
+  })
+  
+} #End of server
 
