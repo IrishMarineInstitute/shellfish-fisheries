@@ -608,9 +608,26 @@ body<-dashboardBody(
               tabPanel("Management Advice",
                        htmlOutput("C_ManagementAdvice")),
               tabPanel("Stock summary",
-                       htmlOutput("C_StockSummary")),
+                       fluidRow(
+                         column(12,
+                                htmlOutput("C_StockSummary")
+                                )
+                       )
+                       ),
+              tabPanel("Data Sources",
+                       fluidRow(
+                         column(12,
+                              htmlOutput("C_DataSources")
+                              )
+                              )
+                       ),
               tabPanel("Assessment",
-                       htmlOutput("C_Assessment"))
+                       fluidRow(
+                         column(12,
+                                htmlOutput("C_Assessment")
+                         )
+                       )
+                       )
             )
     ),
     tabItem(tabName = "GastropodAssessment",
@@ -618,31 +635,34 @@ body<-dashboardBody(
                      style="text-align: center")),
     tabItem(tabName = "Oinfo",
             br(),
-            tags$p("This tab provides a series of usefull links to other sources of information relevant to Irish Fisheries"),
+            tags$p("This tab provides a series of links to other sources of information relevant to Irish Fisheries"),
             br(),
-            tags$b("Shellfish Stocks and Fisheries Review 2022: an assessment of selected stocks"),
+            tags$b("Annual Shellfish Stocks and Fisheries Review: an assessment of selected stocks"),
             br(),
-            tags$a(
-              "https://oar.marine.ie/handle/10793/1814",
-              target = "_blank",
-              href = "https://oar.marine.ie/handle/10793/1814#:~:text=The%20intention%20of%20this%20annual,in%20areas%20designated%20under%20European"),
-            br(),
-            br(),
-            tags$b("Shellfish Stocks and Fisheries Review 2021: an assessment of selected stocks"),
-            br(),
-            tags$a(
-              "https://oar.marine.ie/handle/10793/1744",
-              target = "_blank",
-              href = "https://oar.marine.ie/handle/10793/1744"),
-            br(),
-            br(),
-            tags$b("Shellfish Stocks and Fisheries Review 2019: an assessment of selected stocks"),
-            br(),
-            tags$a(
-              "https://oar.marine.ie/handle/10793/1591",
-              target = "_blank",
-              href = "https://oar.marine.ie/handle/10793/1591"),
-            br(),
+            tags$p(tags$u("2022:"),
+                   tags$a(
+                     "https://oar.marine.ie/handle/10793/1814",
+                     target = "_blank",
+                     href = "https://oar.marine.ie/handle/10793/1814#:~:text=The%20intention%20of%20this%20annual,in%20areas%20designated%20under%20European")
+                   ),
+            tags$p(tags$u("2021:"),
+                   tags$a(
+                     "https://oar.marine.ie/handle/10793/1744",
+                     target = "_blank",
+                     href = "https://oar.marine.ie/handle/10793/1744")
+            ),
+            tags$p(tags$u("2020:"),
+                   tags$a(
+                     "https://oar.marine.ie/handle/10793/1688",
+                     target = "_blank",
+                     href = "https://oar.marine.ie/handle/10793/1688")
+            ),
+            tags$p(tags$u("2019:"),
+                   tags$a(
+                     "https://oar.marine.ie/handle/10793/1591",
+                     target = "_blank",
+                     href = "https://oar.marine.ie/handle/10793/1591")
+            ),
             br(),
             tags$b("Atlas: Commercial fisheries for shellfish around Ireland"),
             br(),
@@ -660,20 +680,54 @@ body<-dashboardBody(
               href = "https://natura2000.eea.europa.eu/"),
             br(),
             br(),
-            tags$b("Fisheries Natura Plan for Cockle in Dundalk (2021-2025)"),
+            tags$b("Fisheries Natura Plan for Cockle in Dundalk"),
             br(),
-            tags$a(
-              "http://www.fishingnet.ie/sea-fisheriesinnaturaareas/concludedassessments/dundalkbay-sacspa/",
-              target = "_blank",
-              href = "http://www.fishingnet.ie/sea-fisheriesinnaturaareas/concludedassessments/dundalkbay-sacspa/"),
-            br(),
-            br(),
-            tags$b("Fisheries Natura Plan for Cockle in Dundalk (2016-2020)"),
-            br(),
-            tags$a(
+            tags$p(tags$u("2021-2025:"),
+                   tags$a(
               "http://www.fishingnet.ie/sea-fisheriesinnaturaareas/concludedassessments/dundalkbay-sacspa/",
               target = "_blank",
               href = "http://www.fishingnet.ie/sea-fisheriesinnaturaareas/concludedassessments/dundalkbay-sacspa/")
+                   ),
+            tags$p(tags$u("2016-2020:"),
+                   tags$a(
+                     "http://www.fishingnet.ie/sea-fisheriesinnaturaareas/concludedassessments/dundalkbay-sacspa/",
+                     target = "_blank",
+                     href = "http://www.fishingnet.ie/sea-fisheriesinnaturaareas/concludedassessments/dundalkbay-sacspa/")
+            ),
+            br(),
+            tags$b("Annual Stock Book: Review of Fish Stocks"),
+            br(),
+            tags$p(tags$u("2022:"),
+                   tags$a(
+                     "https://oar.marine.ie/handle/10793/1805",
+                     target = "_blank",
+                     href = "https://oar.marine.ie/handle/10793/1805")
+            ),
+            tags$p(tags$u("2021:"),
+                   tags$a(
+                     "https://oar.marine.ie/handle/10793/1726",
+                     target = "_blank",
+                     href = "https://oar.marine.ie/handle/10793/1726")
+            ),
+            tags$p(tags$u("2020:"),
+                   tags$a(
+                     "https://oar.marine.ie/handle/10793/1660",
+                     target = "_blank",
+                     href = "https://oar.marine.ie/handle/10793/1660")
+            ),
+            tags$p(tags$u("2019:"),
+                   tags$a(
+                     "https://oar.marine.ie/handle/10793/1433",
+                     target = "_blank",
+                     href = "https://oar.marine.ie/handle/10793/1433")
+            ),
+            br(),
+            tags$b("Marine Institute Digital Stock Book (Shiny App)"),
+            br(),
+            tags$a(
+              "https://shiny.marine.ie/stockbook/",
+              target = "_blank",
+              href = "https://shiny.marine.ie/stockbook/"),
             )
     )
   )

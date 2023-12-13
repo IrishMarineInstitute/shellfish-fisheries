@@ -569,6 +569,21 @@ server <- function(input, output, session) {
     }
   })
   
+  output$C_DataSources<-renderUI({
+    if(input$SpCIDA == "SELECT SPECIES") {
+      return(NULL)
+    } else { 
+      if (input$SpCArea == "SELECT AREA") {
+        return(NULL)
+      } else {
+        includeHTML(file.path("www/Assessment and advice",
+                              input$SpCIDA,
+                              input$SpCArea,
+                              "Data Sources.html"))
+      }
+    }
+  })
+  
   output$C_Assessment<-renderUI({
     if(input$SpCIDA == "SELECT SPECIES") {
       return(NULL)
