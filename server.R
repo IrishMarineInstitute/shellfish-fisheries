@@ -434,24 +434,27 @@ server <- function(input, output, session) {
   # Bivalve assessment
   # Reactive selectInput
   observe({
-    
-    tmp<-ba_a$Area[ba_a$Specie == input$SpBIDA]
-    
-    updateSelectInput(session, 
-                      "SpBArea",
-                      "Area:",
-                      choices = c("SELECT AREA",unique(tmp)),
-                      selected = "SELECT AREA")
-  })
-  
-  observe({
-    tmpS<-ba_a[ba_a$Specie == input$SpBIDA,]
-    tmpA<-tmpS$Year[tmpS$Specie == input$SpBIDA]
-    updateSelectInput(session, 
-                      "SpBY",
-                      "Year:",
-                      choices = c("SELECT YEAR",tmpA),
-                      selected = "SELECT YEAR")
+    if (!is.null(input$SpBIDA) && input$SpBIDA != "SELECT SPECIE") {
+      species_data <- ba_a[ba_a$Specie == input$SpBIDA, ]
+      
+      # Update Area dropdown based on the selected species
+      areas <- unique(species_data$Area)
+      updateSelectInput(session, "SpBArea", "Area:", choices = c("SELECT AREA", areas), selected = "SELECT AREA")
+      
+      # Update Year dropdown based on the selected species and area
+      observeEvent(input$SpBArea, {
+        if (!is.null(input$SpBArea) && input$SpBArea != "SELECT AREA") {
+          area_data <- species_data[species_data$Area == input$SpBArea, ]
+          years <- unique(area_data$Year)
+          updateSelectInput(session, "SpBY", "Year:", choices = c("SELECT YEAR", years), selected = "SELECT YEAR")
+        } else {
+          updateSelectInput(session, "SpBY", "Year:", choices = "SELECT AREA FIRST")
+        }
+      })
+    } else {
+      updateSelectInput(session, "SpBArea", "Area:", choices = "SELECT SPECIE FIRST")
+      updateSelectInput(session, "SpBY", "Year:", choices = "SELECT AREA FIRST")
+    }
   })
   
   # Text output

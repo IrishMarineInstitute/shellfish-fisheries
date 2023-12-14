@@ -70,7 +70,7 @@ landings <- landings %>%
 
 # Bivalves:
 ba_a<-read.csv("data/Data_prep_Output/Bivalves Assessment and Advice.csv")
-ba_a<-ba_a[order(-ba_a$Year,ba_a$Specie),]
+ba_a<-ba_a[order(ba_a$Specie,ba_a$Area,-ba_a$Year),]
 
 #Crustaceans:
 ca_a<-read.csv("data/Data_prep_Output/Crustacean Assessment and Advice.csv")

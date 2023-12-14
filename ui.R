@@ -15,7 +15,7 @@ options(spinner.color="green",
         spinner.type=4)
 
 # Header ------------------------------------------------------------------
-header<- dashboardHeader(title = HTML("Irish Shellfish Fisheries App Visualization"),
+header<- dashboardHeader(title = "Irish Shellfish Fisheries App Visualization",
                          disable = FALSE,
                          titleWidth = 600, 
                                dropdownMenuCustom(type = 'message',
@@ -64,9 +64,12 @@ siderbar<- dashboardSidebar(
     menuItem("Sampling programmes",tabName = "Initial", icon = icon("chart-bar"),
              menuSubItem("Overview",tabName = "overview", icon = icon("home")),
              menuSubItem("Data details",tabName = "Details", icon = icon("info-circle")),
+             menuItem("SVP and Observer Data",tabName = "SVP_O", icon = icon("chart-bar"),
              menuSubItem("Catch Rate Series",tabName = "Catch_Rate", icon = icon("chart-bar")),
-             menuSubItem("Maps of trends in Stock status",tabName = "Map", icon = icon("map-marker-alt")),
-             menuSubItem("Size Distribution",tabName = "Length_Distribution", icon = icon("chart-area"))),
+             menuSubItem("Maps trends in Stock status",tabName = "Map", icon = icon("map-marker-alt")),
+             menuSubItem("Size Distribution",tabName = "Length_Distribution", icon = icon("chart-area"))
+             )
+             ),
     menuItem("Landings",tabName = "landings", icon = icon("chart-bar")),
     menuItem("Assessment and Advice",tabName = "Assessment", icon = icon("indent-right",lib="glyphicon"),
              ##menuSubItem("Malin Crab Stock Assessment",tabName = "Malin_Assessment", icon = icon("indent-right",lib="glyphicon")),
@@ -75,7 +78,8 @@ siderbar<- dashboardSidebar(
              menuSubItem("Crustacean Stocks",tabName = "CrustaceanAssessment", icon = tags$img(src='species/icon/Crustacean2.png',
                                                                                      height='15%',width='15%')),
              menuSubItem("Gastropods Stocks",tabName = "GastropodAssessment", icon = tags$img(src='species/icon/Gastropods.ico',
-                                                                                     height='15%',width='15%'))),
+                                                                                     height='15%',width='15%'))
+             ),
     menuItem("Other Information",tabName = "Oinfo", icon = icon("info-circle"))
     )
   )
@@ -401,110 +405,6 @@ body<-dashboardBody(
                      align="center")
             )
     ),
-    tabItem(tabName = "Malin_Assessment",
-            tags$div(
-              tags$image(src = "species/Edible crab.png",height = 300, width = 300,align = 'center'),
-              style="text-align: center;color: white; margin-bottom:-4em; margin-top:-4em"
-            ),
-            fluidRow(
-              column(6,
-                     tags$div(h3("Introduction"),
-                              style="text-align: center"),
-                     tags$div(tags$p("Brown Crab (Cancer pagurus) Stock status  in the North West of Ireland was assessed using the Surplus Production Model in Continuous Time (SPiCT;", 
-                                     tags$a(href="https://github.com/DTUAqua/spict", "https://github.com/DTUAqua/spict"),
-                                     ")"),
-                              tags$p("Targeted fisheries for brown crab in Ireland developed during the 1960s. The fishery developed off Malin Head in Donegal and along the Donegal coast and, to a lesser extent, on the south coast during the 1970s. The Malin Head fishery accounted for 25% of national landings during the 1980s. The offshore fishery developed in 1990 and by the mid-1990s had fully explored the distribution of brown crab on the Malin Shelf. This stock, which extends from Donegal to the edge of the continental shelf, is the largest stock fished by Irish vessels. Crab stocks off the southwest and southeast coasts are exploited mainly by Irish vessels <13 m in length inside 12 nm.
-                     ICES (WGCRAB) has identified stock units for the purpose of assessment (Figure 1). On the Irish coast these units are identified from tagging data, distribution of fishing activity and larval distribution.
-                            "),
-                              style="text-align: justify"),
-                     tags$div(
-                       tags$image(src = "Irish_Stock_limits.png",height = 500, width = 500,align = 'center'),
-                       tags$figcaption("Figure 1: Ireland crab stock limits by ICES REectangle"),
-                       style="text-align: center; margin-bottom:+2em; margin-top:+2em"),
-                     tags$div(h3("Model Caveats"),
-                              style="text-align: center"),
-                     tags$div(
-                       tags$p("The data sources and model settings describe above, 
-              do not account for two other potential sources of fishing 
-              mortality in the crab stock. These include:",
-                              tags$ul(
-                                tags$li("Significant volumes of crab are used as whelk bait. If these 
-              crab would otherwise have not been landed then it represents an 
-              additional mortality directly associated with provision of whelk 
-              bait. In particular the whelk bait market involves landing of 
-              crab not fit for human consumption and which would otherwise be 
-              rejected by the market. In addition there may be direct transfer 
-              of crab to whelk bait in vessels that fish both species. This 
-              mortality would not accounted for i.e. it is no seen in the 
-              landings"),
-                                tags$li("Significant volumes of crab have been clawed at sea in 
-              recent years. It is unclear if all of this mortality is 
-              accounted for and seen in the landings.")
-                              ),
-                              style="text-align: justify")
-                     ),
-                     tags$div(
-                       tags$image(src = "G.2_KB.png",height = 500, width = 500,align = 'center'),
-                       tags$figcaption("Figure 3: Evolution of relative 
-                              exploitation and relative stock status from 1990-2020. 
-                              F/Fmsy>1 and B/Bmsy<1 indicate overexploitation and loss 
-                              in productivity. "),
-                       style="text-align: center; margin-bottom:+2em; margin-top:+2em")
-                     ),
-              column(6,
-                     tags$div(h3("Data Sources"),
-                              style="text-align: center"),
-                     tags$div(tags$p("The data used in the assessment of the Malin Stock 
-                            included the time series of landings (including Scottish and Northern Irish) and two independent 
-                            biomass indices. All data sources were limited to the 
-                            ICES rectangles shown in Figure 1. Landings, as well as 
-                            sampling information for vessels under 10m which did not 
-                            report the ICES Rectangle were limited to ICES Areas VIa 
-                            and VIIb, or Counties Donegal, Mayo and Sligo when the 
-                            ICES Area was not available. Even though, the extension 
-                            of ICES Area VIa and VIIb (as well as the county limits) 
-                            expands beyond the ICES Rectangles shown in Figure 1, 
-                            fishing operations for vessels under 10m are known to 
-                            occurr within the proposed study area limits."),
-                              tags$p("There is no current scientific survey in the area to 
-                            estimate brown crab biomass. Commercial catch rate data 
-                            can be used as a true index of abundance if the effects 
-                            on catch rates of factors (co-variates) other than 
-                            changes in crab abundance can be accounted for. 
-                            This process is usually referred as catch rate standardization.
-                            For this assessment, two commercial catch rates were used, daily 
-                            catch rates  collected as part of the SVP programme from 2005-2019
-                            (see the Details section of this app for more information), and 
-                            haul by haul data from the offshore vivier crab fleet between 1991-2006,
-                            Details of the standarization process can be found in the annual"
-                                     ,tags$a(href="https://oar.marine.ie/handle/10793/1744","Inshore Stock Book"),
-                                     ", as well as in the Marine Institute MyDAS II report (in process of publication)"),
-                              style="text-align: justify"),
-                     tags$div(h3("Assessment and Stock Status"),
-                              style="text-align: center"),
-                     tags$p("Several SPiCT scenarios were developed to test consistent trends and convergence. 
-                   Across scenarios, comparable diagnosis and outputs were achieved, and model validation 
-                   points define by SPiCT developers accepted,thus confirming 
-                   model and and data sources suitability.",
-                            style="text-align: justify"),
-                     tags$p("SPiCT outputs indicates that the stock entered an,
-                   overfished status around 2016 (Figure 7). Fishing mortality (F) 
-                   is currently higher than optimum fishing mortality rates (Fmsy) 
-                   and stock biomass (B) is below the biomass that, on average, 
-                   would optimize stock productivity (Bmsy). Stock status derived 
-                   from the assessment corresponds closely with industry perception
-                   of the stock in recent years derived from questionnaire data 
-                   (not shown). The described model has been recently used to 
-                   provide advice to DAFM on the relative status of the Malin Crab 
-                   stock.",
-                            style="text-align: justify"),
-                     tags$div(
-                       tags$image(src = "Bmsy_G2.png",height = 500, width = 500,align = 'center'),
-                       tags$figcaption("Figure 2: Malin Stock relative stock trends"),
-                       style="text-align: center; margin-bottom:+2em; margin-top:+2em")
-              )
-            )
-    ),
     tabItem(tabName = "BivalveAssessment",
             fluidRow(
               column(12,
@@ -734,6 +634,6 @@ body<-dashboardBody(
      
 
 ui <- 
-  dashboardPage(header, siderbar, body , skin = "green")
+  dashboardPage(title="Shellfish Fisheries App", skin = "green",header, siderbar, body)
 
 
