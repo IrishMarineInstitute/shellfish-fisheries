@@ -511,6 +511,7 @@ server <- function(input, output, session) {
                           "BiomassMap_from_AbundanceDensityLW.png")
     
       return(list(src = image_path2, filetype = "image/png",width="100%",height="100%"))
+
   }, deleteFile = FALSE)
   
   output$display.size <- renderImage({
