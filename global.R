@@ -66,6 +66,25 @@ landings <- landings %>%
   mutate(Year=gsub("x","",Year,ignore.case = T)) %>%
   data.frame()
 
+#Adding Scientific Name 
+landings$ScientificName<-NA
+landings$ScientificName[landings$SpeciesName == "Cockle"]<-"(Cerastoderma edule)"
+landings$ScientificName[landings$SpeciesName == "Crayfish"]<-"(Palinurus elephas)"
+landings$ScientificName[landings$SpeciesName == "Edible crab"]<-"(Cancer pagurus)"
+landings$ScientificName[landings$SpeciesName == "King Scallop"]<-"(Pecten maximus)"
+landings$ScientificName[landings$SpeciesName == "Lobster"]<-"(Homarus gammarus)"
+landings$ScientificName[landings$SpeciesName == "Native oyster"]<-"(Ostrea edulis)"
+landings$ScientificName[landings$SpeciesName == "Queen scallop"]<-"(Aequipecten opercularis)"
+landings$ScientificName[landings$SpeciesName == "Razor clams"]<-"(Ensis sp.)"
+landings$ScientificName[landings$SpeciesName == "Shore crab"]<-"(Carcinus sp.)"
+landings$ScientificName[landings$SpeciesName == "Shrimp"]<-"(Palaemon sp./Crangon sp.)"
+landings$ScientificName[landings$SpeciesName == "Spider crab"]<-"(Maja squinado)"
+landings$ScientificName[landings$SpeciesName == "Surf clam"]<-"(Spisula sp.)"
+landings$ScientificName[landings$SpeciesName == "Velvet crab"]<-"(Necora puber)"
+landings$ScientificName[landings$SpeciesName == "Whelk"]<-"(Buccinum undatum)"
+
+landings$SS<-paste(landings$SpeciesName,landings$ScientificName,sep=" ")
+
 #Assessment and advice table
 
 # Bivalves:

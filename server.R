@@ -242,7 +242,7 @@ server <- function(input, output, session) {
     ggplot(data=tmp1,
            aes(x=Year,y=Landings,group=1))+
       geom_bar(stat="identity",colour="black",fill="grey")+
-      facet_wrap(.~SpeciesName,scales = "free_y",ncol = 1)+
+      facet_wrap(.~SS,scales = "free_y",ncol = 1)+
       #scale_colour_lancet()+
       #scale_fill_lancet()+
       #scale_y_continuous(limits = c(0,max(tmp$Mean_rate))) +
