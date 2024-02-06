@@ -34,6 +34,7 @@ packs = c("shiny",
           "fontawesome"
           )
 
+
 # Run the following command to verify that the required packages are installed. If some package
 # is missing, it will be installed automatically
 package.check <- lapply(packs, FUN = function(x) {

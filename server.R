@@ -250,6 +250,7 @@ server <- function(input, output, session) {
       labs(x="Year",y="Tonnes")+
       theme_bw()+
       theme(
+        axis.text = element_text(size=rel(1.2)),
         axis.title.x = element_text(size=rel(1.4), face="bold",
                                     margin = margin(t = 25, r = 0, b = 0, l = 0)),
         axis.title.y = element_text(size=rel(1.4), face="bold",
@@ -289,7 +290,7 @@ server <- function(input, output, session) {
       labs(x="Year",y=tmp2$Units,shape="Catch Type",linetype="Catch Type",
            fill="Catch Type",colour="Catch Type")+
       theme_bw()+
-      theme(
+      theme(axis.text = element_text(size=rel(1.2)),
             axis.title.x = element_text(size=rel(1.4), face="bold",
                                         margin = margin(t = 25, r = 0, b = 0, l = 0)),
             axis.title.y = element_text(size=rel(1.4), face="bold",
@@ -414,6 +415,7 @@ server <- function(input, output, session) {
       labs(y=paste0("LPUE","(",unique(RecInBounds()$units),")"))+
       theme_bw()+
       theme(
+        axis.text = element_text(size=rel(1.2)),
         axis.title.x = element_text(size=rel(1), face="bold",
                                     margin = margin(t = 25, r = 0, b = 0, l = 0)),
         axis.title.y = element_text(size=rel(1), face="bold",
@@ -424,6 +426,19 @@ server <- function(input, output, session) {
         plot.background = element_blank(),
         legend.background = element_blank(),
         legend.key=element_blank())
+    
+    if(length(unique(RecInBounds()$ICESNAME)) <= 5) {
+      tlabel<-paste(paste("Species:",unique(RecInBounds()$CommonName)),
+                    paste("Rectangle:",paste(unique(RecInBounds()$ICESNAME),collapse=",")),
+                    sep="\n")
+      ypos<-max(RecInBounds()$LPUE)-1
+      xpos<-2019
+      p<-p+annotate("text", 
+                    x = xpos, 
+                    y = ypos, 
+                    label = tlabel,
+                    size = unit(3, "pt"))
+    }
     
     fig<-ggplotly(p)
     fig

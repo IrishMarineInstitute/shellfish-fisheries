@@ -67,7 +67,8 @@ siderbar<- dashboardSidebar(
              menuSubItem("Catch Rate Series",tabName = "Catch_Rate", icon = icon("chart-bar")),
              menuSubItem("Maps trends in Stock status",tabName = "Map", icon = icon("map-marker-alt")),
              menuSubItem("Size Distribution",tabName = "Length_Distribution", icon = icon("chart-area"))
-             )
+             ),
+             menuItem("Data description",tabName = "Details", icon = icon("info-circle"))
              ),
     menuItem("Landings",tabName = "landings", icon = icon("chart-bar")),
     menuItem("Assessment and Advice",tabName = "Assessment", icon = icon("indent-right",lib="glyphicon"),
@@ -79,8 +80,7 @@ siderbar<- dashboardSidebar(
              menuSubItem("Gastropods Stocks",tabName = "GastropodAssessment", icon = tags$img(src='species/icon/Gastropods.ico',
                                                                                      height='15%',width='15%'))
              ),
-    menuItem("Data details",tabName = "Details", icon = icon("info-circle")),
-    menuItem("Other Information",tabName = "Oinfo", icon = icon("info-circle"))
+    menuItem("Further Information",tabName = "Oinfo", icon = icon("info-circle"))
     )
   )
   )
@@ -130,14 +130,22 @@ body<-dashboardBody(
                         width = NULL,
                         #h4("Select year of interest or whole time series:"),
                         br(),
-                        column(12,sliderInput("Year",
-                                              "Year:",
-                                              min = 2013,
-                                              max = maxY,
-                                              value=c(maxY,maxY),
-                                              round=TRUE,
-                                              sep = "")),
-                      )
+                        column(12,
+                               tagList(
+                                 tags$style(type = 'text/css', 
+                                            '#y_slider .irs-grid-text {font-size: 14px}'), 
+                                 div(id = 'y_slider',
+                                     sliderInput("Year",
+                                                 "Year:",
+                                                 min = 2013,
+                                                 max = maxY,
+                                                 value=c(maxY,maxY),
+                                                 round=TRUE,
+                                                 sep = "")
+                                     )
+                                 )
+                               ),
+                        )
                )
                
              )
@@ -152,8 +160,8 @@ body<-dashboardBody(
     div(
       fluidRow(
         splitLayout(cellWidths = c("50%", "50%"),
-                    plotOutput("plotH1",width = 500,height = 250), 
-                    plotOutput("plotH2",width = 500,height = 250)),
+                    plotOutput("plotH1",width = 500,height = 500), 
+                    plotOutput("plotH2",width = 500,height = 500)),
       style="margin-top:+1em; margin-bottom:+4em")
       ),
     div(
@@ -342,6 +350,81 @@ body<-dashboardBody(
                      align="center")
             )
     ),
+    tabItem(tabName = "Details",
+            br(),
+            HTML("<p>This tab provides a brief description of the different data sources relevant to Shellfish Stocks 
+                   around Ireland. <b>Not all data sources are currently included in the app, as work is ongoing</b></p>"),
+            br(),
+            tags$b("Shellfish Surveys"),
+            HTML('<p align= "justify">Every year, the Marine Institute in collaboration with the fishing industry carry a number of scientific surveys 
+            around Ireland, mainly focusing on bivalves such as <i>Cerastoderma edule</i> (Cockle), <i>Ensis siliqua</i> 
+            (Razor clam) and <i>Ostrea edulis</i> (Native Oyster). The data collected during these surveys 
+            is assessed using a geostatistical model which provides important information about the biomass 
+            and size profile of the stocks. The outputs from this model, are directly reported to the industry. More information about 
+            the different surveys carried out annually can be found in the "Assessment and Advice" tab</p>'),
+            br(),
+            tags$b("Sentinel Vessel Programme"),
+            HTML('<p align="justify">The Sentinel Vessel Programme (SVP) is a joint project implement by BIM and the 
+                 Marine Institute on an annual basis since 2010. In terms of data availability, good quality data are 
+                 typically available for fish species which are managed via a quota system. However, prior to the SVP, 
+                 fishing data in relation to smaller vessels targeting non-quota species was very scant and thus 
+                 monitoring fisheries around Ireland using commercial catch rate data was not possible. Vessels are chosen 
+                 from different length and gear categories representative of fishing activities by vessels (under 12 m) 
+                 around the Irish coast. BIM supply participants with logbooks every January and at the end of each year 
+                 completed logbooks are collected by BIM and are forwarded to the Marine Institute who extract and manage 
+                 the data. The data recorded in the SVP logbooks includes the catches, landings and discards of several 
+                 shellfish species, i.e. <i>Homarus gammarus</i> (Lobster), <i>Cancer pagurus</i> (Brown Crab), 
+                 <i>Maja brachydactyla</i> (Spider Crab), <i>Necora puber</i> (Velvet Crab), <i>Buccinum undatum</i> (Whelk),
+                 <i>Ensis</i> sp. (Razor clam),<i>Cerastoderma edule</i> (Cockle) and various finfish species. 
+                 The fishing location is recorded at either ICES Statistical Rectangle or Inshore Grid Resolution and 
+                 additional details such as the type and amount of bait used and vessel operating costs 
+                 (i.e. fuel consumption, number of crew, hour’s worked.) are also recorded. Additionally, 
+                 although to a lesser extent (every five fishing days), length frequency data for lobsters and crabs may 
+                 be included.</p>'),
+            br(),
+            tags$b("Observer At-Sea Sampling programme"),
+            HTML('<p align="justify">As part of the European Union (EU) Data Collection Framework (DCF) (or previous 
+                 versions of it), since the early 90s, the Marine Institute has been requested to report catch sampling 
+                 information to aid in the assessment of fish stocks. This includes both commercial at sea sampling and 
+                 port sampling. Since 2011, Marine Institute staff and contractors seat sea sampling on inshore fishing 
+                 vessels to observe and record fishing activity. Approximately 50-80 day trips are completed annually, 
+                 although this varies year on year and was lower earlier in the time series and during the Covid lockdown 
+                 periods. Effort and catch data per haul is recorded, during an observer at sea sampling trip, on several 
+                 shellfish species such as <i>Homarus gammarus</i> (Lobster), <i>Cancer pagurus</i> (Brown Crab), <i>Maja brachydactyla</i> 
+                 (Spider Crab), <i>Necora puber</i> (Velvet Crab), <i>Buccinum undatum</i> (Whelk), and the bycatch associated with 
+                 these fishing events. Furthermore, all individuals or a sample (depending on catch volume) of the target 
+                 species captured are measured to the nearest mm and their sex is determined, providing a significant 
+                 amount of valuable biological information for these species. The observer programme provides data at the 
+                 level of individual fishing operations (catches per Haul). The sampling levels of 50-80 trips 
+                 per year is low relative to the thousands of trips undertaken by the Inshore fishing fleet annually. 
+                 Furthermore there is high variance between vessels (related to location of fishing). The low sampling 
+                 level and high variance reduces precision and even accuracy in these data sets especially when reported 
+                 to local level where the data supports are diluted.</p>'),
+            br(),
+            tags$b("Skipper Self-Sampling programme"),
+            HTML('<p align="justify">Since 2021, a number of commercial inshore vessels around the Irish coast report 
+                 daily information  at haul level in relation to catches, landings and discards, for several shellfish 
+                 species. Biological data in relation to individual measurements and sex of the catches are also 
+                 recorded. This programme is administered fully by the Marine Institute and the information provided 
+                 enhances both the resolution (haul), and quantity (number of trips) of the sentinel vessel and observer 
+                 programmes, respectively. As this programme is still in its infancy, data from this programme is not yet 
+                 included in this Shellfish Fisheries app.</p>'),
+            br(),
+            tags$b("Landings"),
+            HTML('<p align= "justify">Annual landings of crustaceans, bivalves and gastropods are collated for Irish vessels landings into Ireland
+                 (with exception of King Scallop (<i>Pecten maximus</i>) and Brown Crab 
+                 (<i>Cancer pagurus</i>), in which landings by Irish vessels abroad are also 
+                 included). Landings data are reported under two different frameworks depending on the 
+                 length of the vessel: Logbooks declarations for vessels >10 m and sales 
+                 notes for vessels <10m.</p>'),
+            br(),
+            tags$b("Port Sampling"),
+            HTML('<p align= "justify">Port sampling is undertaken as part of the Data Collection Framework obligation to  
+                 provide valuable data relating to the size, weight and gender of landings and the area (at ICES Rectangle 
+                 level) where they were caught. Some of the species routinely sampled around Irish harbours include <i>Pecten 
+                 maximus</i> (Scallop), <i>Buccinum undatum</i> (whelk), <i>Cancer pagurus</i> (Brown crab) and <i>Homarus gammarus</i> 
+                 (European lobster) among others.</p>')
+    ),
     tabItem(tabName = "BivalveAssessment",
             fluidRow(
               column(12,
@@ -470,81 +553,6 @@ body<-dashboardBody(
     tabItem(tabName = "GastropodAssessment",
             tags$div(h1(paste0("In development")),
                      style="text-align: center")),
-    tabItem(tabName = "Details",
-            br(),
-            HTML("<p>This tab provides a brief description of the different data sources relevant to Shellfish Stocks 
-                   around Ireland. <b>Not all data sources are currently included in the app, as work is ongoing</b></p>"),
-            br(),
-            tags$b("Shellfish Surveys"),
-            HTML('<p align= "justify">Every year, the Marine Institute in collaboration with the fishing industry carry a number of scientific surveys 
-            around Ireland, mainly focusing on bivalves such as <i>Cerastoderma edule</i> (Cockle), <i>Ensis siliqua</i> 
-            (Razor clam) and <i>Ostrea edulis</i> (Native Oyster). The data collected during these surveys 
-            is assessed using a geostatistical model which provides important information about the biomass 
-            and size profile of the stocks. The outputs from this model, are directly reported to the industry. More information about 
-            the different surveys carried out annually can be found in the "Assessment and Advice" tab</p>'),
-            br(),
-            tags$b("Sentinel Vessel Programme"),
-            HTML('<p align="justify">The Sentinel Vessel Programme (SVP) is a joint project implement by BIM and the 
-                 Marine Institute on an annual basis since 2010. In terms of data availability, good quality data are 
-                 typically available for fish species which are managed via a quota system. However, prior to the SVP, 
-                 fishing data in relation to smaller vessels targeting non-quota species was very scant and thus 
-                 monitoring fisheries around Ireland using commercial catch rate data was not possible. Vessels are chosen 
-                 from different length and gear categories representative of fishing activities by vessels (under 12 m) 
-                 around the Irish coast. BIM supply participants with logbooks every January and at the end of each year 
-                 completed logbooks are collected by BIM and are forwarded to the Marine Institute who extract and manage 
-                 the data. The data recorded in the SVP logbooks includes the catches, landings and discards of several 
-                 shellfish species, i.e. <i>Homarus gammarus</i> (Lobster), <i>Cancer pagurus</i> (Brown Crab), 
-                 <i>Maja brachydactyla</i> (Spider Crab), <i>Necora puber</i> (Velvet Crab), <i>Buccinum undatum</i> (Whelk),
-                 <i>Ensis</i> sp. (Razor clam),<i>Cerastoderma edule</i> (Cockle) and various finfish species. 
-                 The fishing location is recorded at either ICES Statistical Rectangle or Inshore Grid Resolution and 
-                 additional details such as the type and amount of bait used and vessel operating costs 
-                 (i.e. fuel consumption, number of crew, hour’s worked.) are also recorded. Additionally, 
-                 although to a lesser extent (every five fishing days), length frequency data for lobsters and crabs may 
-                 be included.</p>'),
-            br(),
-            tags$b("Observer At-Sea Sampling programme"),
-            HTML('<p align="justify">As part of the European Union (EU) Data Collection Framework (DCF) (or previous 
-                 versions of it), since the early 90s, the Marine Institute has been requested to report catch sampling 
-                 information to aid in the assessment of fish stocks. This includes both commercial at sea sampling and 
-                 port sampling. Since 2011, Marine Institute staff and contractors seat sea sampling on inshore fishing 
-                 vessels to observe and record fishing activity. Approximately 50-80 day trips are completed annually, 
-                 although this varies year on year and was lower earlier in the time series and during the Covid lockdown 
-                 periods. Effort and catch data per haul is recorded, during an observer at sea sampling trip, on several 
-                 shellfish species such as <i>Homarus gammarus</i> (Lobster), <i>Cancer pagurus</i> (Brown Crab), <i>Maja brachydactyla</i> 
-                 (Spider Crab), <i>Necora puber</i> (Velvet Crab), <i>Buccinum undatum</i> (Whelk), and the bycatch associated with 
-                 these fishing events. Furthermore, all individuals or a sample (depending on catch volume) of the target 
-                 species captured are measured to the nearest mm and their sex is determined, providing a significant 
-                 amount of valuable biological information for these species. The observer programme provides data at the 
-                 level of individual fishing operations (catches per Haul). The sampling levels of 50-80 trips 
-                 per year is low relative to the thousands of trips undertaken by the Inshore fishing fleet annually. 
-                 Furthermore there is high variance between vessels (related to location of fishing). The low sampling 
-                 level and high variance reduces precision and even accuracy in these data sets especially when reported 
-                 to local level where the data supports are diluted.</p>'),
-            br(),
-            tags$b("Skipper Self-Sampling programme"),
-            HTML('<p align="justify">Since 2021, a number of commercial inshore vessels around the Irish coast report 
-                 daily information  at haul level in relation to catches, landings and discards, for several shellfish 
-                 species. Biological data in relation to individual measurements and sex of the catches are also 
-                 recorded. This programme is administered fully by the Marine Institute and the information provided 
-                 enhances both the resolution (haul), and quantity (number of trips) of the sentinel vessel and observer 
-                 programmes, respectively. As this programme is still in its infancy, data from this programme is not yet 
-                 included in this Shellfish Fisheries app.</p>'),
-            br(),
-            tags$b("Landings"),
-            HTML('<p align= "justify">Annual landings of crustaceans, bivalves and gastropods are collated for Irish vessels landings into Ireland
-                 (with exception of King Scallop (<i>Pecten maximus</i>) and Brown Crab 
-                 (<i>Cancer pagurus</i>), in which landings by Irish vessels abroad are also 
-                 included). Landings data are reported under two different frameworks depending on the 
-                 length of the vessel: Logbooks declarations for vessels >10 m and sales 
-                 notes for vessels <10m.</p>'),
-            br(),
-            tags$b("Port Sampling"),
-            HTML('<p align= "justify">Port sampling is undertaken as part of the Data Collection Framework obligation to  
-                 provide valuable data relating to the size, weight and gender of landings and the area (at ICES Rectangle 
-                 level) where they were caught. Some of the species routinely sampled around Irish harbours include <i>Pecten 
-                 maximus</i> (Scallop), <i>Buccinum undatum</i> (whelk), <i>Cancer pagurus</i> (Brown crab) and <i>Homarus gammarus</i> 
-                 (European lobster) among others.</p>')
-    ),
     tabItem(tabName = "Oinfo",
             br(),
             tags$p("This tab provides a series of links to other sources of information relevant to Irish Fisheries"),
