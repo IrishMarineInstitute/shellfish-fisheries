@@ -59,12 +59,14 @@ minY<-as.numeric(min(dat_sta$Year))
 maxY<-as.numeric(max(dat_sta$Year))
 
 #Landings table
-landings<-read.csv("data/Data_prep_Output/Landings_Table_2022.csv")
+landings<-read.csv(file.path("data/Data_prep_Output/",
+                             "Landings_Table.csv"))
 landings <- landings %>%
   pivot_longer(cols = starts_with("X"),
                names_to = "Year",
                values_to = "Landings") %>%
   mutate(Year=gsub("x","",Year,ignore.case = T)) %>%
+  filter(Year <= maxY) %>%
   data.frame()
 
 #Adding Scientific Name 

@@ -358,7 +358,7 @@ server <- function(input, output, session) {
     
     leaflet() %>%
       setView(lng = -6.2, lat = 53.3, zoom =5.5 ) %>%
-      addProviderTiles(providers$Esri.WorldTerrain) %>% #Esri.OceanBasemap
+      addProviderTiles(providers$OpenStreetMap.HOT) %>% #Esri.OceanBasemap
       addLegend(pal = pal, 
                 values = ICES_LPUE$slp_std, 
                 opacity = 1, 
@@ -616,6 +616,11 @@ server <- function(input, output, session) {
                               "Assessment.html"))
       }
     }
+  })
+  
+  output$Glossary<-renderUI({
+    includeHTML(file.path("www",
+                          "Glossary.html"))
   })
   
 } #End of server

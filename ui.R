@@ -80,7 +80,8 @@ siderbar<- dashboardSidebar(
              menuSubItem("Gastropods Stocks",tabName = "GastropodAssessment", icon = tags$img(src='species/icon/Gastropods.ico',
                                                                                      height='15%',width='15%'))
              ),
-    menuItem("Further Information",tabName = "Oinfo", icon = icon("info-circle"))
+    menuItem("Further Information",tabName = "Oinfo", icon = icon("info-circle")),
+    menuItem("Glossary",tabName = "Glos", icon = icon("book"))
     )
   )
   )
@@ -648,7 +649,9 @@ body<-dashboardBody(
               "https://shiny.marine.ie/stockbook/",
               target = "_blank",
               href = "https://shiny.marine.ie/stockbook/"),
-            )
+            ),
+    tabItem(tabName = "Glos",
+            htmlOutput("Glossary"))
     )
   )
      
