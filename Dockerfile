@@ -7,7 +7,7 @@ RUN sudo apt-get update && apt-get install -y libssl-dev libudunits2-0 libudunit
 # Install required packages (add additional package installs after these lines)
 RUN sudo chown -R shiny:shiny /var/lib/shiny-server/
 RUN Rscript -e "install.packages(c('shinyBS','shinydashboard','shinythemes','shinyjs','shinyWidgets','leaflet','dplyr','tidyr'), repos='https://cran.rstudio.com/')" && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
-RUN Rscript -e "install.packages(c('ggplot2','lubridate','plotly','sp','sf','rgdal','shinycssloaders'), repos='https://cran.rstudio.com/')" && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
+RUN Rscript -e "install.packages(c('ggplot2','lubridate','plotly','sp','sf','shinycssloaders'), repos='https://cran.rstudio.com/')" && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 RUN Rscript -e "install.packages(c('ggsci','colorRamps','ggrepel','rintrojs'), repos='https://cran.rstudio.com/')" && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
 # Copy required files
