@@ -33,19 +33,19 @@ header<- dashboardHeader(title = "Irish Shellfish Fisheries App Visualization",
                                                  from = 'Twitter',
                                                  message = "",
                                                  icon = icon("twitter"),
-                                                 href = "https://shiny.marine.ie/shellfishfisheries/"
+                                                 href = "https://shiny.marine.ie/shellfish-fisheries/"
                                                ),
                                                messageItem(
                                                  from = 'Facebook',
                                                  message = "",
                                                  icon = icon("facebook"),
-                                                 href = "https://shiny.marine.ie/shellfishfisheries/"
+                                                 href = "https://shiny.marine.ie/shellfish-fisheries/"
                                                ),
                                                messageItem(
                                                  from = 'LinkedIn',
                                                  message = "",
                                                  icon = icon("linkedin"),
-                                                 href = "https://shiny.marine.ie/shellfishfisheries/"
+                                                 href = "https://shiny.marine.ie/shellfish-fisheries/"
                                                ))
                          
                          )
