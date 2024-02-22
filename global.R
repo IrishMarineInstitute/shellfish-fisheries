@@ -25,7 +25,7 @@ packs = c("shiny",
           "plotly",
           "sp",
           "sf",
-          "rgdal",
+          #"rgdal",
           "shinycssloaders",
           "ggsci",
           "colorRamps",
@@ -108,11 +108,12 @@ source("./lib/override.R",
        local = TRUE)
 
 #Load data at ICES_rectangle
-ICES_LPUE<-readOGR(dsn = "data/Data_prep_Output",
-                   layer = "ICES_LPUE",
-                   encoding = "utf8")
-ICES_LPUE <- spTransform(ICES_LPUE, CRSobj=projWGS84)
-ICES_LPUE<-st_as_sf(ICES_LPUE)
+ICES_LPUE<-st_read(dsn = "data/Data_prep_Output",
+                   layer = "ICES_LPUE")
+                   #encoding = "utf8")
+#ICES_LPUE <- spTransform(ICES_LPUE, CRSobj=projWGS84)
+ICES_LPUE <- st_transform(ICES_LPUE, CRSobj=projWGS84)
+#ICES_LPUE<-st_as_sf(ICES_LPUE)
 
 
 #Read rds file related to the polygons

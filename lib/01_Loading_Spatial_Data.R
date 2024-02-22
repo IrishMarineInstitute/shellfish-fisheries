@@ -18,15 +18,17 @@ projWGS84 <- CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,
 # Load spatial data -------------------------------------------------------
 spatialdir<-file.path("./data/geoData")
 
-ICES_rectangles<- readOGR(dsn = spatialdir,
-                          layer = "ICES_Statistical_Rectangles_Eco",
-                          encoding = "utf8")
-ICES_rectangles <- spTransform(ICES_rectangles, CRSobj=projWGS84)
+ICES_rectangles<- st_read(dsn = spatialdir,
+                          layer = "ICES_Statistical_Rectangles_Eco")
+                          #encoding = "utf8")
+#ICES_rectangles <- spTransform(ICES_rectangles, CRSobj=projWGS84)
+ICES_rectangles <- st_transform(ICES_rectangles, CRSobj=projWGS84)
 
-Inshore_Grid<- readOGR(dsn = spatialdir,
-                          layer = "Inshore_grid_NEW",
-                          encoding = "utf8")
-Inshore_Grid <- spTransform(Inshore_Grid, CRSobj=projWGS84)
+Inshore_Grid<- st_read(dsn = spatialdir,
+                          layer = "Inshore_grid_NEW")
+                          #encoding = "utf8")
+#Inshore_Grid <- spTransform(Inshore_Grid, CRSobj=projWGS84)
+Inshore_Grid <- st_transform(Inshore_Grid, CRSobj=projWGS84)
 #coastline<-readOGR(dsn = spatialdir,
 #                   layer = "Ireland",
 #                   encoding = "utf8")
