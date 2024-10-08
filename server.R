@@ -205,7 +205,7 @@ server <- function(input, output, session) {
       as.numeric()
     
     valueBox(value=CREMeas$Nind, 
-             icon = icon(list(src="species/Edible crab.png", width="150px"), 
+             icon = icon(list(src="species/Edible crab.png", width="18%"), 
                          lib="local"),
              subtitle = tags$p("Number of crabs measured by observers",
                                style = "font-size: 100%;"),
@@ -226,7 +226,7 @@ server <- function(input, output, session) {
     valueBox(value=LBEMeas$Nind, 
              subtitle = tags$p("Number of lobsters measured by observers",
                                style = "font-size: 100%;"),
-             icon = icon(list(src="species/European lobster.png", width="150px"), 
+             icon = icon(list(src="species/European lobster.png", width="20%"), 
                          lib="local"), 
              color = "green"
     )
@@ -251,6 +251,7 @@ server <- function(input, output, session) {
       theme_bw()+
       theme(
         axis.text = element_text(size=rel(1.2)),
+        axis.text.x=element_text(angle = 90, vjust = 0.5, hjust=1),
         axis.title.x = element_text(size=rel(1.4), face="bold",
                                     margin = margin(t = 25, r = 0, b = 0, l = 0)),
         axis.title.y = element_text(size=rel(1.4), face="bold",
@@ -330,7 +331,7 @@ server <- function(input, output, session) {
       theme_bw()+
       theme(axis.title.x = element_text(size=17.5, face="bold",margin = margin(t = 10, r = 0, b = 0, l = 0)),
             axis.title.y = element_text(size=17.5, face="bold",margin = margin(t = 0, r = 10, b = 0, l = 0)),
-            axis.text.x = element_text(face="bold",size=18),
+            axis.text.x = element_text(face="bold",size=18,angle = 90, vjust = 0.5, hjust=1),
             axis.text.y = element_text(face="bold",size=18),
             legend.title = element_blank(),
             legend.text = element_text(size=14.5, face="bold"),
@@ -348,9 +349,10 @@ server <- function(input, output, session) {
   
   #Leaflet section
  # pal<-reactiveValues()
+  ip<-colorRampPalette(paletteer_c("ggthemes::Classic Area Red-Green",n=30))
   
   pal <- colorNumeric(
-    palette = "RdYlGn",
+    palette = ip(30),#RdYlGn
     domain = ICES_LPUE$slp_std,
     na.color = "transparent")
   
@@ -416,6 +418,7 @@ server <- function(input, output, session) {
       theme_bw()+
       theme(
         axis.text = element_text(size=rel(1.2)),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
         axis.title.x = element_text(size=rel(1), face="bold",
                                     margin = margin(t = 25, r = 0, b = 0, l = 0)),
         axis.title.y = element_text(size=rel(1), face="bold",

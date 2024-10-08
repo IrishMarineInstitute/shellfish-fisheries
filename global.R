@@ -28,11 +28,12 @@ packs = c("shiny",
           #"rgdal",
           "shinycssloaders",
           "ggsci",
-          "colorRamps",
+          "ggthemes",
+          "paletteer",
+          #"colorRamps",
           "ggrepel",
           "rintrojs",
-          "fontawesome"
-          )
+          "fontawesome")
 
 
 # Run the following command to verify that the required packages are installed. If some package

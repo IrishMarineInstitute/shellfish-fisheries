@@ -15,9 +15,11 @@ options(spinner.color="green",
         spinner.type=4)
 
 # Header ------------------------------------------------------------------
-header<- dashboardHeader(title = "Irish Shellfish Fisheries App Visualization",
+header<- dashboardHeader(title = "Irish Shellfish Fisheries App",
+                         #tags$li(class="dropdown", # must include css
+                         #  tags$link(rel = "stylesheet", type = "text/css", href = "header_style.css")),
                          disable = FALSE,
-                         titleWidth = 600, 
+                         titleWidth = "50%", 
                                #dropdownMenuCustom(type = 'message',
                               #                 customSentence = customSentence,
                               #                 messageItem(
@@ -29,38 +31,41 @@ header<- dashboardHeader(title = "Irish Shellfish Fisheries App Visualization",
                          dropdownMenuCustom( type = 'message',
                                                customSentence = customSentence_share,
                                                icon = icon("share-alt"),
-                                               messageItem(
-                                                 from = 'Twitter',
-                                                 message = "",
-                                                 icon = icon("twitter"),
-                                                 href = "https://shiny.marine.ie/shellfish-fisheries/"
-                                               ),
+                                             messageItem(
+                                               from = 'Twitter',
+                                               message = "",
+                                               icon = icon("twitter"),
+                                               href = "https://twitter.com/intent/tweet?text=Hello%20world&url=https://shiny.marine.ie/shellfish/"
+                                             ),
                                                messageItem(
                                                  from = 'Facebook',
                                                  message = "",
                                                  icon = icon("facebook"),
-                                                 href = "https://shiny.marine.ie/shellfish-fisheries/"
+                                                 href = "https://facebook.com/sharer/sharer.php?u=https://shiny.marine.ie/shellfish/"
                                                ),
                                                messageItem(
                                                  from = 'LinkedIn',
                                                  message = "",
                                                  icon = icon("linkedin"),
-                                                 href = "https://shiny.marine.ie/shellfish-fisheries/"
+                                                 href = "https://linkedin.com/shareArticle?mini=true&url=https://shiny.marine.ie/shellfish/"
                                                ))
                          
                          )
 
 header$children[[2]]$children[[2]] <- header$children[[2]]$children[[1]]
 header$children[[2]]$children[[1]] <- tags$a(href='https://www.marine.ie',
-                                             tags$img(src='logo/MI.4.png',height='40',width='228.6', align = 'left'),
+                                             tags$img(src='logo/MI.4.png',align = 'left',height='90%',width='45%'),#height='40',width='228.6'
                                              target = '_blank') #,height='67',width='228.6', align = 'left'
 
 
 
 siderbar<- dashboardSidebar(
+  introjsUI(),  
   introBox(data.step = 1, data.intro = intro$text[1],data.position="right", #  intro tour
            div(class="inlay",style = "height:100%;width:100%;background-color: #ecf0f5;"),
   sidebarMenu(
+    #tags$head( # must include css
+    #  tags$link(rel = "stylesheet", type = "text/css", href = "body_style.css")),
     menuItem("Sampling programmes",tabName = "Initial", icon = icon("chart-bar"),
              menuSubItem("Overview",tabName = "overview", icon = icon("home")),
              menuItem("SVP and Observer Data",tabName = "SVP_O", icon = icon("chart-bar"),
@@ -89,24 +94,38 @@ siderbar<- dashboardSidebar(
 body<-dashboardBody(
   
   tags$head( # must include css
+    #tags$link(rel = "stylesheet", type = "text/css", href = "body_style.css")
     tags$style(HTML("
         .img-local {
         }
         
+        @media (min-width: 550px) {
         .small-box .img-local {
         position: absolute;
-        top: auto;
-        bottom: -25px;
-        right: 5px;
+        top: -15px;
+        bottom: -40px;
+        right: -2px;
         z-index: 0;
         font-size: 70px;
         color: rgba(0, 0, 0, 0.15);
-        }"
+        }
+        }
+        
+        @media (min-width: 400px) and (max-width: 549px) {
+        .small-box .img-local {
+        position: absolute;
+        top: 1px;
+        bottom: -5px;
+        right: -2px;
+        z-index: 0;
+        font-size: 70px;
+        color: rgba(0, 0, 0, 0.15);
+        }
+                    }"
     ))
   ),
   
   useShinyjs(),
-  introjsUI(),  
   
   tabItems(
     tabItem(tabName = "overview",
@@ -161,8 +180,8 @@ body<-dashboardBody(
     div(
       fluidRow(
         splitLayout(cellWidths = c("50%", "50%"),
-                    plotOutput("plotH1",width = 500,height = 500), 
-                    plotOutput("plotH2",width = 500,height = 500)),
+                    plotOutput("plotH1",width = "90%"), 
+                    plotOutput("plotH2",width = "90%")),
       style="margin-top:+1em; margin-bottom:+4em")
       ),
     div(
@@ -171,11 +190,13 @@ body<-dashboardBody(
         valueBoxOutput("NHauls_Obs_Y",width = 6))
       ),
     div(
+      fluidRow(
       introBox(data.step = 3, data.intro = intro$text[3], #  intro tour
-               div(class = "inlay", style = "height:30px;width:100%;background-color: #ecf0f5;"),
-               fluidRow(
+               div(class = "inlay", style = "height:30px;width:80%;background-color: #ecf0f5;"),
+  
         valueBoxOutput("CREMeasured",width = 6),
-        valueBoxOutput("LBEMeasured",width = 6))
+        valueBoxOutput("LBEMeasured",width = 6)
+    )
     )
     )
     ),
@@ -204,8 +225,8 @@ body<-dashboardBody(
             ),
             br(),
             fluidRow(
-              column(12, shinycssloaders::withSpinner(plotOutput("landingsPlot", width = 1000, 
-                                                                 height=600)),align="center")
+              column(12, shinycssloaders::withSpinner(plotOutput("landingsPlot", width = "80%")),
+                     align="center")
             )
     ),
     tabItem(tabName = "Catch_Rate",
@@ -243,8 +264,7 @@ body<-dashboardBody(
               ),
             br(),
             fluidRow(
-              column(12, shinycssloaders::withSpinner(plotOutput("plot1", width = 1000, 
-                                                                 height=500)),
+              column(12, shinycssloaders::withSpinner(plotOutput("plot1", width = "80%")),
                      tags$div("*LPUE= Landings per unit of Effort;  DPUE= Discards per unit of Effort",style = "font-size:15px",
                               tags$br("*VPUE= V-Notched per unit of Effort;  OPUE= Oversized per unit of Effort",style = "font-size:15px")),
                      align="center")
@@ -294,7 +314,7 @@ body<-dashboardBody(
                                   certain ICES rectangles on given years contain few data points to estimate reliable trends,
                                  so caution should be taken when extracting conclusions from particular areas.</b>"),
                             style="text-align: justify; color:red")),
-              column(6, shinycssloaders::withSpinner(plotlyOutput("scatter_plot", height=300)))
+              column(6, shinycssloaders::withSpinner(plotlyOutput("scatter_plot",height = "90%")))
             )
     ),
     tabItem(tabName = "Length_Distribution",
@@ -345,8 +365,7 @@ body<-dashboardBody(
               ),
             br(),
             fluidRow(
-              column(12, shinycssloaders::withSpinner(plotOutput("plot2", width = 1000, 
-                                                                 height=600)),
+              column(12, shinycssloaders::withSpinner(plotOutput("plot2", width = "80%")),
                      tags$div("*Vertical green dashed line indicating Minimum and Maximum Landing Size",style = "font-size:15px"),
                      align="center")
             )
