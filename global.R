@@ -35,15 +35,38 @@ packs = c("shiny",
           "rintrojs",
           "fontawesome")
 
+library(shiny)
+library(shinyBS)
+library(shinydashboard )
+library(shinythemes)
+library(shinyjs)
+library(shinyWidgets)
+library(leaflet)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(lubridate )
+library(plotly)
+library(sp)
+library(sf)
+library(shinycssloaders)
+library(ggsci)
+library(ggthemes)
+library(paletteer)
+library(ggrepel)
+library(rintrojs)
+library(fontawesome)
+    
+
 
 # Run the following command to verify that the required packages are installed. If some package
 # is missing, it will be installed automatically
-package.check <- lapply(packs, FUN = function(x) {
-  if (!require(x, character.only = TRUE)) {
-    install.packages(x, dependencies = TRUE)
-  }
-})
-library(shiny)
+#package.check <- lapply(packs, FUN = function(x) {
+#  if (!require(x, character.only = TRUE)) {
+#    install.packages(x, dependencies = TRUE)
+#  }
+#})
+#library(shiny)
 
 # Intro steps
 intro<-read.csv("./data/intro.csv")
