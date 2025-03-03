@@ -28,74 +28,90 @@
   <div style="width:48%; float: left; display:inline-block; margin-right: 2%" align="justify">
     <h3>SPiCT Assessment</h3>
     
-    <p>SPiCT (surplus production in continuous time) is a version of a surplus production model which are commonly used in fisheries assessments. The model enables error in the catch process to be reflected in the uncertainty of estimated model parameters and management quantities. Estimates of exploitable biomass and fishing mortality can be obtained at any point in time from data sampled at arbitrary intervals. A number of model scenarios were tested which included varying the time series of landings and catch rate indices included in the assessment and the initial settings for key model parameters (symmetry of the production curve, depletion at the beginning of the time series and intrinsic growth rate for crab).</p>
+    <p>SPiCT (Surplus Production in Continuous Time) is a surplus production model 
+    commonly used in fisheries assessments. The model estimates exploitable biomass 
+    and fishing mortality, which are indirectly observed via indices of abundance 
+    and catch. Process and observation errors are incorporated in the model, which
+    is then reflected in the model uncertainty and projected catch advice. </p>
+    
+    <p>
+      A number of model scenarios have been tested, which included varying the 
+      length of the time series of landings and abundance indices, as well as 
+      adjusting initial settings and priors for key model parameters (e.g., 
+      symmetry of the production curve, depletion at the beginning of the time 
+      series and intrinsic rate of population growth). All configurations of the 
+      model setup resulted in consistent trends and outputs, indicating the 
+      assessment is robust to various assumptions. For simplicity, only one 
+      scenario is reported here.
+    </p>
+    
+    <p>
+      The SPiCT model indicates that the stock is overfished (biomass below B<sub>MSY</sub>) 
+      and is undergoing overfishing (fishing mortality above F<sub>MSY</sub>).
+    </p>
 
-<p>SPiCT outputs indicate that the stock entered an overfished state around 2016 (Figure 1). Fishing mortality (F) reached its highest point ~2019, and has shown a slight decrease in recent years. Nevertheless, F is still higher than optimum fishing mortality rates (Fmsy) and stock biomass (B) is well below the biomass that, on average, would optimize stock productivity (Bmsy).
-</p>
-    
+
+
     <h3>Catch advice</h3>
-    <p>The assessment shows that fishing mortality should be reduced in all stocks. The level
-    to which fishing mortality is reduced depends on the harvest control rule that is adopted. Two rules are considered below; </p>
+    <p>The assessment indicates that fishing mortality should be reduced. The 
+    level of reduction will impact the rate of recovery of the stock biomass. 
+    There are a number of harvest control rules that could be adopted; the two 
+    suggested rules are the ICES advice rule or fishing at F<sub>MSY</sub> (numbers 3 and 4 
+    in Table 10 below). The ICES advice rule optimizes yield while maintaining 
+    low levels of risk by incorporating the uncertainty in the estimated biomass
+    and fishing mortality into the short-term forecast, using the 35th percentile 
+    as opposed to the medians of estimated B/B<sub>MSY</sub> and F/F<sub>MSY</sub> distributions. 
+    Implementation of harvest control rules to reduce fishing mortality provides 
+    scope for stock recovery but does not guarantee recovery. </p>
     
-    <ol>
-      <li>Fish at Fmsy</li>
-      <li>Apply the so called 2/3 rule as applied to ICES category 3 stocks for which only trends, rather than a full stock assessment, are available.</li>
-      </ol>
-      
-      <p>The Fmsy advice is taken directly from the assessment model presented. The Fmsy rule reduces the F/Fmsy ratio (and corresponding landings) back to 1 or the fishing mortality rate that may lead to recovery of the stock to Bmsy levels. The 2/3 rule takes the average index value (LPUE) in the 2 most recent years in the assessment and for which full data are available (2020, 2021), divides it by the average index value in the 3 years prior to that (2017-2019) and applies it to the most recent year for which landings are available (2021). As the index is declining this rule advises a reduction in landings (Table 1).</p> 
-      
-      <table align="center">
+     <table align="center">
         <tr>
-          <td><b>Stock</b></td>
-          <td><b>Current landings (2022)</b></td>
-          <td><b>Landings at Fmsy</b></td>
-          <td><b>Landings 2/3 rule</b></td>
+          <td><b>Harvest Strategy</b></td>
+          <td><b>Catch (tonnes)</b></td>
+          <td><b>B/Bmsy</b></td>
+          <td><b>F/Fmsy</b></td>
           </tr>
         <tr>
-          <td>Malin Shelf</td>
-          <td>5,463</td>
-          <td>3,900</td>
-          <td>4,500</td>
+          <td>1. Keep current catch</td>
+          <td>5,480</td>
+          <td>0.61</td>
+          <td>1.33</td>
           </tr>
+        <tr>
+          <td>2. Keep current F</td>
+          <td>5,544</td>
+          <td>0.61</td>
+          <td>1.34</td>
+          </tr>
+        <tr>
+          <td>3. Fish at Fmsy</td>
+          <td>4,335</td>
+          <td>0.67</td>
+          <td>1</td>
+          </tr>
+        <tr>
+          <td>4. ICES advice rule</td>
+          <td>4,077</td>
+          <td>0.69</td>
+          <td>0.93</td>
+          </tr>
+
           			
         </table>
-        
-        <h3>Interpretation</h3>
-    <p>The year on year decline in the observed and standardised LPUE index between 2014 and
-    2020 has not been previously observed in the time series which extends back to 1990.
-    Although the LPUE indices can be confounded by changes in grading practice, unrelated to
-    the minimum landing size, it is unlikely to be the cause of the decline in recent years.
-    Observed discard rates (DPUE) also declined from 2016-2019 in parallel with the LPUE
-    index. Decline in LPUE could be linked to growth overfishing whereby the removal of crabs
-    above the MLS occurs at a higher rate than they can be replaced by growth but
-    corresponding declines in DPUE and LPUE signal an overall year on year reduction in the
-    abundance of crab in the fished area. Crabs in the discards are not all recent recruits to
-    the stock and include a number of age classes. The decline in discards, therefore, may
-    signal a reduction in recruitment in the past number of years.</p>
     
-    <p>The minimum size of 130 mm and more recently 140 mm has been regarded as sufficient to
-    protect the stock from recruitment overfishing given that the size at maturity is
-    approximately 120 mm. Spawning escapement is, therefore, significant and above 30 % of
-    what it would be in an unfished stock. A number of spawning events occur before crabs
-    are
-    exposed to fishing mortality. High grading at observed modal size of about 150 mm
-    provides further protection. Fishing is unlikely to be the sole cause of the recent
-    declines in stock abundance. However, recruitment decline combined with high fishing
-    effort will further reduce spawning stock biomass. In such a case, fishing mortality
-    (landings) should be reduced to avoid further depletion in stock biomass.
-    </p>
+    
 
     </div>
  <br>
   <div style="width:50%; float: left; display:inline-block;">
     <img class="mb-3 mb-lg-0 me-md-0" 
-    src="Assessment and advice/Brown Crab/Malin/plots/Kb_2022_Assessment.png" 
+    src="Assessment and advice/Brown Crab/Malin/plots/2024_kobe.png" 
     alt="image"  
     style="max-width: 100%; height: auto; margin-bottom:2px">
     
     <figcaption 
     style= "margin-bottom:2px" 
-    align="justify">Figure 1: Malin Shelf Stock evolution of relative exploitation and relative stock status from 1990-2020. F/Fmsy > 1 and B/Bmsy < 1 indicate overexploitation and loss in productivity.</figcaption>
+    align="justify">Figure 1: Kobe plot of the stock’s estimated exploitation status (F) and population status (B) in relation to estimated F<sub>MSY</sub> and B<sub>MSY</sub>. </figcaption>
     
     </div>
     </div>

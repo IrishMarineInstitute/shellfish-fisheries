@@ -519,8 +519,9 @@ server <- function(input, output, session) {
     image_path1<-file.path("www/Assessment and advice",
                           paste(input$SpBIDA,input$SpBArea,input$SpBY,sep= "/"), 
                           "Survey_zones.png")
-      return(list(src = image_path1, filetype = "image/png",width="100%",height="100%"))
-
+     ## return(list(src = image_path1, filetype = "image/png",width="100%",height="100%"))
+    return(list(src = image_path1, filetype = "image/png",height="100%"))
+    
   }, deleteFile = FALSE)
   
   output$display.assessment <- renderImage({
@@ -528,15 +529,18 @@ server <- function(input, output, session) {
                           paste(input$SpBIDA,input$SpBArea,input$SpBY,sep= "/"), 
                           "BiomassMap_from_AbundanceDensityLW.png")
     
-      return(list(src = image_path2, filetype = "image/png",width="100%",height="100%"))
-
+     ## return(list(src = image_path2, filetype = "image/png",width="100%",height="100%"))
+    return(list(src = image_path2, filetype = "image/png",height="100%"))
+    
   }, deleteFile = FALSE)
   
   output$display.size <- renderImage({
     image_path3<-file.path("www/Assessment and advice",
                           paste(input$SpBIDA,input$SpBArea,input$SpBY,sep= "/"), 
                           "Size_distribution_abDensity.png")
-    return(list(src = image_path3, filetype = "image/png",width="100%",height="100%"))
+    ##return(list(src = image_path3, filetype = "image/png",width="100%",height="100%"))
+    return(list(src = image_path3, filetype = "image/png",width="100%"))
+    
   }, deleteFile = FALSE)
   
   

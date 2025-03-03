@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en"> 
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>DataSources</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+</head>
+
+<div style="display:block; width:100%;">
+  <div style="width:48%; float: left; display:inline-block; margin-right: 2%" align="justify">
+    <h3>Landings</h3>
+    
+    <p>Throughout the time series, from 1980 to 2021, Irish vessels landed the largest proportion of Brown crab from the Malin stock. Landings peaked in 2004 at almost 8,000 tonnes. The peak in Irish landings observed in this year did not occur in the Scottish or Northern Irish data. Scottish landings remained relatively stable from the early 90s, whereas Northern Irish landings show a continuous increase with the exception of 2019 when landings started falling (Fig. 1).</p>
+    
+    <h3>Biomass Indices</h3>
+    
+    <p>Two potential indices of abundance are available for the stock:</p>
+    
+    <ol>
+      <li>Daily landings per unit effort (LPUE) collected in the SVP or earlier versions of
+      it from 1996-2020 and </li>
+      <li>Georeferenced haul by haul LPUE, from the Irish Offshore crab fleet
+      from 1991-2006.</li> 
+      </ol>
+      
+      <p>Additional information available in both datasets include soak times and unique
+      vessel identifiers. Data on discards was available in the SVP programme but are not
+      always reported and are not included here.</p>
+      
+      <p>Commercial catch rate data can be used as a true index of abundance if the effects
+      on catch rates of factors (co-variates) other than changes in crab abundance can be
+      accounted for. This process is usually referred as catch rate standardization. In the
+      case of the SVP programme, only trips targeting crab were used in the standardization
+      analysis to reduce the variance in the LPUE estimates that would result if vessels
+      targeting lobsters with a crab by-catch were included. When the target species
+      intention was not recorded for a particular vessel or trip, it was assumed that vessels
+      above 8 m total length tend to target brown crab. An extensive data exploration was
+      carried out before any model implementation to identify potential issues, such as
+      outliers (in both landings or effort) or missing data.
+      For both datasets, two independent gamma distributed Generalised Additive Model’s (GAM)
+      were developed with the following base form:</p> 
+      
+      <body>
+        <p align="center">η_i=log(µ_i)=β_o+offset(log(Noofpots))+β_Y*Year+s(SoakDays_i∼”cs”)+(Vessel_i∼"iid")</p>
+        <p align="center">Landings_i∼Gamma(µ_i,ϕ)</p>
+        <p align="center">var[Landings_i ]=µ_i^2/ϕ</p>
+        <p align="center">ϕ=exp⁡(θ</p>
+        </body>
+
+
+<p>where mean µi is the expected landings (kg of crab) on trip i and is linked (log link) to the linear predictor ηi, ϕ is the precision parameter from the gamma distribution and βY is the coefficient for the explanatory variables (Y= year), fitted as fixed effects. The term s() defines smoothing effects, as cubic spline (“cs”) for SoakDays, to account for potential non-linear relationships between catch and soak time, and a single random effect (“iid”) for Vessel ID, to account for potential correlation of observations from the same vessels. The “offset()” is used to incorporate the fishing effort (Number of pots) into the model based on a 1:1 relationship between catch and effort. This accounts for changes in catch rates that might be related to overall effort rather than changes in crab abundance. The offshore vivier index standardization, besides the terms described above, also accounted for potential gear saturation, defined as the effect on LPUE of the number of pots set 3 days before a specific fishing event and within a 5 km buffer zone, as well as an additional random effect to account for spatial and temporal correlation among observations at haul level.</p>
+
+<p>In both models, the resulting index of abundance was based on the predictions of the fitted model for standard values of the covariates, and for every location in the case of the spatiotemporal model. The vessel effect was removed from the predictions.
+The SVP index show a relative increase in LPUE in the first 10 years of the time series, although inter-annual variability suggest data quality issues in this period (Fig. 2). A sharp decrease in the standardized LPUE occurred from 2014 onwards, although there is signs of recovery in 2020-2021. The limited sampling in 2008 for the Malin stock (4 vessels only compared to on average 13-15 vessels) are likely to be causing this outlying estimate.</p> 
+
+<p>The offshore vivier standardized index (Fig. 3) shows a declining trend at the beginning of the time series and stable LPUE between 1994 and 2000 followed by small declines from 2000-2006. This trend was similar across different spatial-temporal model formulations.</p>
+    
+    </div>
+ <br>
+  <div style="width:50%; float: left; display:inline-block;">
+    <img class="mb-3 mb-lg-0 me-md-0" 
+    src="Assessment and advice/Brown Crab/Malin/plots/Landings_By_Country_reconstructed.png" 
+    alt="image"  
+    style="max-width: 100%; height: auto; margin-bottom:2px">
+    
+    <figcaption 
+    style= "margin-bottom:4px" 
+    align="justify">Figure 1 :Left: Landings (tonnes) of brown crab (Cancer pagurus) in ICES Divisions VIa and VIIb (Malin Shelf stock) 1990-2021 by Irish (IRL), Northern Irish (NI) and Scottish (SCO) vessels. Source: Logbooks data for vessels above 10 m and sales notes data for vessel under 10 m. Right: Data for Northern Ireland are reconstructed from 1990-2011 based on a general linear modelling framework using data from 2002-2019 (red line = R, reconstructed landings).</figcaption>
+    
+       <img class="mb-3 mb-lg-0 me-md-0" 
+       src="Assessment and advice/Brown Crab/Malin/plots/2022_Standarized Index.png" 
+       alt="image"  
+       style="max-width: 100%; height: auto ;margin-bottom:2px">
+       
+       <figcaption style= "margin-bottom:4px" align="justify">Figure 2:Standardized index of crab abundance from the SVP programme after applying GAM model (1996-2021). Shaded regions indicate approximate 95 % confidence intervals.</figcaption>
+       
+       <img class="mb-3 mb-lg-0 me-md-0" 
+       src="Assessment and advice/Brown Crab/Malin/plots/Index of abundance.png" 
+       alt="image"  
+       style="max-width: 100%; height: auto ;margin-bottom:2px">
+       
+       <figcaption style= "margin-bottom:4px" align="justify">Figure 3: Standardized offshore LPUE time series using four different spatial-temporal model formulations in INLA (1991-2006). Nominal LPUE as squares included for comparison.</figcaption>
+    
+    </div>
+</div>

@@ -554,7 +554,7 @@ body<-dashboardBody(
                                 )
                        )
                        ),
-              tabPanel("Data Sources",
+              tabPanel("Data Inputs",
                        fluidRow(
                          column(12,
                               htmlOutput("C_DataSources")
