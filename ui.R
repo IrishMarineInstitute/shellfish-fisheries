@@ -216,7 +216,7 @@ body<-dashboardBody(
                        column(3,sliderInput("YearL",
                                             "Year:",
                                             min = 2004,
-                                            max = maxY,
+                                            max = maxY_landings,
                                             value=c(2015,2018),
                                             round=TRUE,
                                             sep = "")),
