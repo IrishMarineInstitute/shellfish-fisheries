@@ -519,9 +519,15 @@ server <- function(input, output, session) {
     image_path1<-file.path("www/Assessment and advice",
                           paste(input$SpBIDA,input$SpBArea,input$SpBY,sep= "/"), 
                           "Survey_zones.png")
-     ## return(list(src = image_path1, filetype = "image/png",width="100%",height="100%"))
     return(list(src = image_path1, filetype = "image/png",height="100%"))
+  }, deleteFile = FALSE)
+  
+  output$survey.zones.PFS <- renderImage({
     
+    image_path1PFS<-file.path("www/Assessment and advice",
+                              paste0(input$SpBIDA, " (Post Fishery Survey)/", input$SpBArea, "/", input$SpBY),
+                              "Survey_zones.png")
+    return(list(src = image_path1PFS, filetype = "image/png",height="100%"))
   }, deleteFile = FALSE)
   
   output$display.assessment <- renderImage({
@@ -529,8 +535,15 @@ server <- function(input, output, session) {
                           paste(input$SpBIDA,input$SpBArea,input$SpBY,sep= "/"), 
                           "BiomassMap_from_AbundanceDensityLW.png")
     
-     ## return(list(src = image_path2, filetype = "image/png",width="100%",height="100%"))
     return(list(src = image_path2, filetype = "image/png",height="100%"))
+  }, deleteFile = FALSE)
+  
+  output$display.assessment.PFS <- renderImage({
+    
+    image_path2PFS<-file.path("www/Assessment and advice",
+                              paste0(input$SpBIDA, " (Post Fishery Survey)/", input$SpBArea, "/", input$SpBY),
+                              "BiomassMap_from_AbundanceDensityLW.png")
+    return(list(src = image_path2PFS, filetype = "image/png",height="100%"))
     
   }, deleteFile = FALSE)
   
@@ -541,6 +554,13 @@ server <- function(input, output, session) {
     ##return(list(src = image_path3, filetype = "image/png",width="100%",height="100%"))
     return(list(src = image_path3, filetype = "image/png",width="100%"))
     
+  }, deleteFile = FALSE)
+  
+  output$display.size.PFS <- renderImage({
+    image_path3PFS<-file.path("www/Assessment and advice",
+                              paste0(input$SpBIDA, " (Post Fishery Survey)/", input$SpBArea, "/", input$SpBY),
+                              "Size_distribution_abDensity.png")
+    return(list(src = image_path3PFS, filetype = "image/png",width="100%"))
   }, deleteFile = FALSE)
   
   

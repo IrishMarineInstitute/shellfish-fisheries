@@ -502,27 +502,32 @@ body<-dashboardBody(
                                   tags$p(htmlOutput("survey_text")),
                                   style="text-align: justify")
                          ),
-                         column(width = 6, 
+                         column(conditionalPanel("input.SpBIDA == 'Cockle'", "Pre Fishery Survey"),
+                                width = 3, 
+                                
                                 imageOutput("survey.zones")
-                         )
-                         )
-                       ),
-              tabPanel("Assesment Outputs",
+                         ),
+                         conditionalPanel("input.SpBIDA == 'Cockle' & input.SpBY == '2024'",
+                                          column("Post Fishery Survey", width = 3,
+                                                 imageOutput("survey.zones.PFS")))
+                       )
+              ),
+              tabPanel("Assessment Outputs",
                        fluidRow(
-                         column(width = 6, 
+                         column(width = 10,
                                 div(
                                   tags$p(htmlOutput("Aoutput_text")),
-                                  style="text-align: justify"),
-                                div(imageOutput("display.size"))
-                                ),
-                         br(),
-                         column(width = 6, 
-                                imageOutput("display.assessment")
-                                )
-                         )
-              )
-            )
-            ),
+                                  style="text-align: justify"))),
+                       fluidRow(column(width = 8,
+                                       conditionalPanel("input.SpBIDA == 'Cockle'", div("Pre Fishery Survey", style = 'text-align:right;')),
+                                       div(imageOutput("display.size"), style = 'text-align:right;'),
+                                       conditionalPanel("input.SpBIDA == 'Cockle' & input.SpBY == '2024'", "Post Fishery Survey", div(imageOutput("display.size.PFS"), style = 'text-align:right;'))),
+                                column(width = 4,
+                                       conditionalPanel("input.SpBIDA == 'Cockle'", "Pre Fishery Survey"),
+                                       div(imageOutput("display.assessment"), style = 'text-align:left;'),
+                                       conditionalPanel("input.SpBIDA == 'Cockle' & input.SpBY == '2024'", "Post Fishery Survey", div(imageOutput("display.assessment.PFS"), style = 'text-align:left;')))
+                       )
+              ))),
     tabItem(tabName = "CrustaceanAssessment",
             fluidRow(
               column(12,
