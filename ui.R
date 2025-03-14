@@ -584,6 +584,18 @@ body<-dashboardBody(
             br(),
             tags$b("Annual Shellfish Stocks and Fisheries Review: an assessment of selected stocks"),
             br(),
+            tags$p(tags$u("2024:"),
+                   tags$a(
+                     "https://oar.marine.ie/handle/10793/2017",
+                     target = "_blank",
+                     href = "https://oar.marine.ie/handle/10793/2017#:~:text=The%20intention%20of%20this%20annual,in%20areas%20designated%20under%20European")
+            ),
+            tags$p(tags$u("2023:"),
+                   tags$a(
+                     "https://oar.marine.ie/handle/10793/1894",
+                     target = "_blank",
+                     href = "https://oar.marine.ie/handle/10793/1894#:~:text=The%20intention%20of%20this%20annual,in%20areas%20designated%20under%20European")
+            ),
             tags$p(tags$u("2022:"),
                    tags$a(
                      "https://oar.marine.ie/handle/10793/1814",
@@ -642,6 +654,18 @@ body<-dashboardBody(
             br(),
             tags$b("Annual Stock Book: Review of Fish Stocks"),
             br(),
+            tags$p(tags$u("2024:"),
+                   tags$a(
+                     "https://oar.marine.ie/handle/10793/1995",
+                     target = "_blank",
+                     href = "https://oar.marine.ie/handle/10793/1995")
+            ),
+            tags$p(tags$u("2023:"),
+                   tags$a(
+                     "https://oar.marine.ie/handle/10793/1873",
+                     target = "_blank",
+                     href = "https://oar.marine.ie/handle/10793/1873")
+            ),
             tags$p(tags$u("2022:"),
                    tags$a(
                      "https://oar.marine.ie/handle/10793/1805",
