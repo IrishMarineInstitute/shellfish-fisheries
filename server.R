@@ -323,7 +323,7 @@ server <- function(input, output, session) {
       geom_vline(aes(xintercept=MLS),colour="green",linetype="dashed",size=1.5)+
       geom_vline(aes(xintercept=MaxLS),colour="green",linetype="dashed",size=1.5)+
       #geom_freqpoly(binwidth = 1,size=1.5)+
-      facet_wrap(.~Year,ncol=1)+
+      facet_wrap(.~Year,ncol=1, scales = "free_y")+
       scale_colour_lancet()+
       scale_fill_lancet()+
       expand_limits(y=c(0,0))+

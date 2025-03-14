@@ -365,7 +365,7 @@ body<-dashboardBody(
               ),
             br(),
             fluidRow(
-              column(12, shinycssloaders::withSpinner(plotOutput("plot2", width = "80%")),
+              column(12, shinycssloaders::withSpinner(plotOutput("plot2", height = "800px")),
                      tags$div("*Vertical green dashed line indicating Minimum and Maximum Landing Size",style = "font-size:15px"),
                      align="center")
             )
@@ -373,7 +373,7 @@ body<-dashboardBody(
     tabItem(tabName = "Details",
             br(),
             HTML("<p>This tab provides a brief description of the different data sources relevant to Shellfish Stocks 
-                   around Ireland. <b>Not all data sources are currently included in the app, as work is ongoing</b></p>"),
+                   around Ireland. <b>Not all data sources are currently included in the app, as work is ongoing.</b></p>"),
             br(),
             tags$b("Shellfish Surveys"),
             HTML('<p align= "justify">Every year, the Marine Institute in collaboration with the fishing industry carry a number of scientific surveys 
