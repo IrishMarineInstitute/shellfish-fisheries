@@ -400,7 +400,9 @@ body<-dashboardBody(
                  additional details such as the type and amount of bait used and vessel operating costs 
                  (i.e. fuel consumption, number of crew, hour’s worked.) are also recorded. Additionally, 
                  although to a lesser extent (every five fishing days), length frequency data for lobsters and crabs may 
-                 be included.</p>'),
+                 be included. In 2025, the option of submitting data via a mobile phone app was introduced for interested vessels. 
+                 The app has facilitated a more efficient method of data collection and provided a user friendly and 
+                 convenient method for skippers to enter and submit their data.</p>'),
             br(),
             tags$b("Observer At-Sea Sampling programme"),
             HTML('<p align="justify">As part of the European Union (EU) Data Collection Framework (DCF) (or previous 
