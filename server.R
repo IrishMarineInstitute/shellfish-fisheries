@@ -14,6 +14,23 @@ server <- function(input, output, session) {
   
   removeUI( selector = '#main_wait_message' )
   
+  # Need more colors
+  cb_palette <- c(
+    "#E69F00", # orange
+    "#56B4E9", # sky blue
+    "#009E73", # green
+    "#F0E442", # yellow
+    "#0072B2", # blue
+    "#D55E00", # vermillion
+    "#CC79A7", # pink
+    "#999999", # grey
+    "#F4A582", # light orange
+    "#80B1D3", # light blue
+    "#B3DE69", # light green
+    "#FDB462"  # pastel orange
+  )
+  
+  
   # UI General
   #show intro modal
   observeEvent("", {
@@ -79,8 +96,8 @@ server <- function(input, output, session) {
     )
   })
   
-  output$plotH1<-renderPlot({
-    dat_sta %>%
+  output$plotH1<-renderPlotly({
+    svp_county_tmp <- dat_sta %>%
       filter(.$Year >= input$Year[1]) %>%
       filter(.$Year <= input$Year[2]) %>%
       filter(grepl("SVP",SampleType,ignore.case = T)) %>%
@@ -91,8 +108,10 @@ server <- function(input, output, session) {
       mutate(csum = rev(cumsum(rev(Nvessels))), 
              pos = Nvessels/2 + lead(csum, 1),
              pos = if_else(is.na(pos), Nvessels/2, pos)) %>%
-      arrange(-Nvessels) %>%
-      ggplot(data=.,
+      arrange(-Nvessels)
+    
+    # Static version (Not displayed unless called)
+    svp_county_plot <- ggplot(data=svp_county_tmp,
              aes(x="",y=Nvessels,
                  fill=COUNTY))+
         geom_col(width = 1) +
@@ -100,7 +119,7 @@ server <- function(input, output, session) {
         geom_label_repel(aes(y = pos, label = Nvessels),
                          size = 4.5, nudge_x = 1, show.legend = FALSE) +
       labs(y="SVP boats by County") +
-      scale_fill_npg()+
+      scale_fill_manual(values = cb_palette)+
       theme_void()+
       theme(
         legend.title=element_blank(),
@@ -114,10 +133,32 @@ server <- function(input, output, session) {
         plot.background = element_blank()
       )
     
-  },bg="transparent")
+    # Interactive
+    plot_ly(
+      svp_county_tmp,
+      labels = ~COUNTY,
+      values = ~Nvessels,
+      type = 'pie',
+      text = ~Nvessels,
+      textposition = 'outside',          # labels outside
+      textinfo = 'label+text',           # show county + Nvessels
+      hoverinfo = 'text',
+      hovertext = ~paste0(COUNTY, ": ", round(Nvessels/sum(Nvessels)*100, 1), "%"),
+      insidetextorientation = 'radial',
+      marker = list(colors = cb_palette,
+                    line = list(color = '#FFFFFF', width = 1))
+    ) %>%
+      layout(
+        title = "<b>SVP Vessels by County</b>",
+        showlegend = FALSE,               # remove legend
+        paper_bgcolor = 'rgba(0,0,0,0)',  # transparent background
+        plot_bgcolor = 'rgba(0,0,0,0)'
+      )
+    
+  })
   
-  output$plotH2<-renderPlot({
-    dat_sta %>%
+  output$plotH2<-renderPlotly({
+    obs_county_tmp <- dat_sta %>%
       filter(.$Year >= input$Year[1]) %>%
       filter(.$Year <= input$Year[2]) %>%
       filter(grepl("obs",SampleType,ignore.case = T)) %>%
@@ -128,8 +169,10 @@ server <- function(input, output, session) {
       mutate(csum = rev(cumsum(rev(NTrips))), 
              pos = NTrips/2 + lead(csum, 1),
              pos = if_else(is.na(pos), NTrips/2, pos)) %>%
-      arrange(-NTrips) %>%
-      ggplot(data=.,
+      arrange(-NTrips)
+    
+    # Static version (Not displayed unless called)
+    obs_county_plot <- ggplot(data=obs_county_tmp,
              aes(x="",y=NTrips,
                  fill=COUNTY))+
       geom_col(width = 1) +
@@ -137,7 +180,7 @@ server <- function(input, output, session) {
       geom_label_repel(aes(y = pos, label = NTrips),
                        size = 4.5, nudge_x = 1, show.legend = FALSE) +
       labs(y="Observer trips by County") +
-      scale_fill_npg()+
+      scale_fill_manual(values = cb_palette)+
       theme_void()+
       theme(
         legend.title=element_blank(),
@@ -151,7 +194,28 @@ server <- function(input, output, session) {
         plot.background = element_blank()
       )
     
-  },bg="transparent")
+    # Interactive
+    plot_ly(
+      obs_county_tmp,
+      labels = ~COUNTY,
+      values = ~NTrips,
+      type = 'pie',
+      text = ~NTrips,
+      textposition = 'outside',          # labels outside
+      textinfo = 'label+text',           # show county + NTrips
+      hoverinfo = 'text',
+      hovertext = ~paste0(COUNTY, ": ", round(NTrips/sum(NTrips)*100, 1), "%"),
+      insidetextorientation = 'radial',
+      marker = list(colors = cb_palette,
+                    line = list(color = '#FFFFFF', width = 1))
+    ) %>%
+      layout(
+        title = "<b>Observer Trips by County</b>",
+        showlegend = FALSE,               # remove legend
+        paper_bgcolor = 'rgba(0,0,0,0)',  # transparent background
+        plot_bgcolor = 'rgba(0,0,0,0)'
+      )
+  })
   
   
   output$NTrips_Obs_Y <- renderValueBox({
@@ -232,16 +296,17 @@ server <- function(input, output, session) {
     )
   })
   
-  output$landingsPlot<-renderPlot({
+  output$landingsPlot<-renderPlotly({
     
     tmp1<-landings%>%
       filter(.$SpeciesName %in% input$SpIDL) %>%
       filter(.$Year >= input$YearL[1]) %>%
       filter(.$Year <= input$YearL[2])
     
-    ggplot(data=tmp1,
+    lplot <- ggplot(data=tmp1,
            aes(x=Year,y=Landings,group=1))+
-      geom_bar(stat="identity",colour="black",fill="grey")+
+      geom_point(stat="identity",colour="black",fill="grey")+
+      geom_line(stat="identity",colour="black",fill="grey")+
       facet_wrap(.~SS,scales = "free_y",ncol = 1)+
       #scale_colour_lancet()+
       #scale_fill_lancet()+
@@ -261,9 +326,31 @@ server <- function(input, output, session) {
         panel.background = element_rect(fill = "aliceblue"),
         plot.background = element_blank(),
         legend.background = element_blank(),
-        legend.key=element_blank())
+        legend.key=element_blank(),
+        panel.spacing = unit(0.4, "lines"),
+        strip.placement = "outside"
+        )
     
-  },bg="transparent")
+    n_panels <- length(unique(tmp1$SS))
+    
+    ggplotly(
+      lplot,
+      height = 300 * n_panels
+    )
+  })
+  
+  output$landingsPlot_ui <- renderUI({
+    
+    n_panels <- length(input$SpIDL)
+    
+    shinycssloaders::withSpinner(
+      plotlyOutput(
+        "landingsPlot",
+        width  = "80%",
+        height = 300 * n_panels   # tweak: 250–350 px usually ideal
+      )
+    )
+  })
   
   output$plot1<-renderPlot({
     

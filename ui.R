@@ -35,7 +35,7 @@ header<- dashboardHeader(title = "Irish Shellfish Fisheries App",
                                                from = 'Twitter',
                                                message = "",
                                                icon = icon("twitter"),
-                                               href = "https://twitter.com/intent/tweet?text=Hello%20world&url=https://shiny.marine.ie/shellfish/"
+                                               href = "https://twitter.com/intent/tweet?text=Check%20this%20out&url=https://shiny.marine.ie/shellfish/"
                                              ),
                                                messageItem(
                                                  from = 'Facebook',
@@ -53,10 +53,23 @@ header<- dashboardHeader(title = "Irish Shellfish Fisheries App",
                          )
 
 header$children[[2]]$children[[2]] <- header$children[[2]]$children[[1]]
-header$children[[2]]$children[[1]] <- tags$a(href='https://www.marine.ie',
-                                             tags$img(src='logo/MI.4.png',align = 'left',height='90%',width='45%'),#height='40',width='228.6'
-                                             target = '_blank') #,height='67',width='228.6', align = 'left'
-
+# header$children[[2]]$children[[1]] <- tags$a(href='https://www.marine.ie',
+#                                              tags$img(src='logo/MI.4.png',align = 'left',height='90%',width='45%'),#height='40',width='228.6'
+#                                              target = '_blank') #,height='67',width='228.6', align = 'left'
+header$children[[2]]$children[[1]] <- tags$div(
+  style = "display: flex; align-items: center; height: 50px;",
+  
+  # Logo
+  tags$a(href = "https://www.marine.ie",
+    target = "_blank",
+    tags$img(src   = "logo/MI.4.png",
+      style = "max-height: 40px; width: auto; margin-right: 10px;")
+  ),
+  
+  # Title text
+  tags$span("Irish Shellfish Fisheries App",
+    style = "font-size: 20px; color: white;")
+)
 
 
 siderbar<- dashboardSidebar(
@@ -180,8 +193,8 @@ body<-dashboardBody(
     div(
       fluidRow(
         splitLayout(cellWidths = c("50%", "50%"),
-                    plotOutput("plotH1",width = "90%"), 
-                    plotOutput("plotH2",width = "90%")),
+                    plotlyOutput("plotH1",width = "90%"), 
+                    plotlyOutput("plotH2",width = "90%")),
       style="margin-top:+1em; margin-bottom:+4em")
       ),
     div(
@@ -217,7 +230,7 @@ body<-dashboardBody(
                                             "Year:",
                                             min = 2004,
                                             max = maxY_landings,
-                                            value=c(2015,2018),
+                                            value=c(2004,maxY_landings),
                                             round=TRUE,
                                             sep = "")),
                      )
@@ -225,8 +238,9 @@ body<-dashboardBody(
             ),
             br(),
             fluidRow(
-              column(12, shinycssloaders::withSpinner(plotOutput("landingsPlot", width = "80%")),
-                     align="center")
+              column(12,
+                     uiOutput("landingsPlot_ui"),
+                     align = "center")
             )
     ),
     tabItem(tabName = "Catch_Rate",
@@ -514,22 +528,38 @@ body<-dashboardBody(
                                                  imageOutput("survey.zones.PFS")))
                        )
               ),
+
               tabPanel("Assessment Outputs",
+                       fluidRow(column(width = 10,
+                                       div(tags$p(htmlOutput("Aoutput_text")),
+                                           style = "text-align: justify")
+                       )),
                        fluidRow(
-                         column(width = 10,
-                                div(
-                                  tags$p(htmlOutput("Aoutput_text")),
-                                  style="text-align: justify"))),
-                       fluidRow(column(width = 8,
-                                       conditionalPanel("input.SpBIDA == 'Cockle'", div("Pre Fishery Survey", style = 'text-align:right;')),
-                                       div(imageOutput("display.size"), style = 'text-align:right;'),
-                                       conditionalPanel("input.SpBIDA == 'Cockle' & input.SpBY == '2024'", "Post Fishery Survey", div(imageOutput("display.size.PFS"), style = 'text-align:right;'))),
-                                column(width = 4,
-                                       conditionalPanel("input.SpBIDA == 'Cockle'", "Pre Fishery Survey"),
-                                       div(imageOutput("display.assessment"), style = 'text-align:left;'),
-                                       conditionalPanel("input.SpBIDA == 'Cockle' & input.SpBY == '2024'", "Post Fishery Survey", div(imageOutput("display.assessment.PFS"), style = 'text-align:left;')))
-                       )
-              ))),
+                         column(width = 6,
+                                conditionalPanel("input.SpBIDA == 'Cockle'",
+                                                 div("Pre Fishery Survey", style = "text-align:right; font-weight:bold;"),
+                                                 div(style = "text-align:right; margin-bottom:50px;",
+                                                     imageOutput("display.size", width = "100%")
+                                                 )),
+                                
+                                conditionalPanel("input.SpBIDA == 'Cockle' & input.SpBY == '2024'",
+                                                 div("Post Fishery Survey", style = "text-align:right; font-weight:bold;"),
+                                                 div(style = "text-align:right; margin-bottom:50px;",
+                                                     imageOutput("display.size.PFS", width = "100%")
+                                                 ))),
+                         column(width = 4,
+                                conditionalPanel("input.SpBIDA == 'Cockle'",
+                                                 div("Pre Fishery Survey", style = "text-align:left; font-weight:bold;"),
+                                                 div(style = "text-align:left; margin-bottom:50px;",
+                                                     imageOutput("display.assessment", width = "100%")
+                                                 )),
+                                
+                                conditionalPanel("input.SpBIDA == 'Cockle' & input.SpBY == '2024'",
+                                                 div("Post Fishery Survey", style = "text-align:left; font-weight:bold;"),
+                                                 div(style = "text-align:left; margin-bottom:50px;",
+                                                     imageOutput("display.assessment.PFS", width = "100%")
+                                                 )))))
+            )),
     tabItem(tabName = "CrustaceanAssessment",
             fluidRow(
               column(12,
