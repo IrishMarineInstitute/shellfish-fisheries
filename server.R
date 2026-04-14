@@ -59,13 +59,13 @@ server <- function(input, output, session) {
   output$Nvessels_SVP <- renderValueBox({
     
     Nvessels_SVP_Y <- dat_sta %>%
-      filter(.$Year >= input$Year[1]) %>%
-      filter(.$Year <= input$Year[2]) %>%
+      filter(Year >= min(input$Year),
+             Year <= max(input$Year)) %>%
       filter(grepl("SVP",SampleType,ignore.case = T)) %>%
-      summarise(Nvessels=n_distinct(VesselID)) %>%
-      ungroup() %>%
+      # get the sum total of vessels by year, not distinct vessels participating
+      summarise(Nvessels=n_distinct(VesselID), .by = Year) %>%
       select(Nvessels) %>%
-      as.numeric()
+      sum()
     
     valueBox(value=Nvessels_SVP_Y,
              subtitle = tags$p("Number of boats in SVP programme",
@@ -78,8 +78,8 @@ server <- function(input, output, session) {
   output$NDaysSVP <- renderValueBox({
     
     NDaysSVP<- dat_sta %>%
-      filter(.$Year >= input$Year[1]) %>%
-      filter(.$Year <= input$Year[2]) %>%
+      filter(Year >= min(input$Year),
+             Year <= max(input$Year)) %>%
       filter(grepl("SVP",SampleType,ignore.case = T)) %>%
       group_by(VesselID) %>%
       summarise(Days=n_distinct(EventStartDate)) %>%
@@ -98,16 +98,15 @@ server <- function(input, output, session) {
   
   output$plotH1<-renderPlotly({
     svp_county_tmp <- dat_sta %>%
-      filter(.$Year >= input$Year[1]) %>%
-      filter(.$Year <= input$Year[2]) %>%
+      filter(Year >= min(input$Year),
+             Year <= max(input$Year)) %>%
       filter(grepl("SVP",SampleType,ignore.case = T)) %>%
       
-      group_by(COUNTY) %>%
-      summarise(Nvessels=n_distinct(VesselID)) %>%
-      ungroup () %>%
-      mutate(csum = rev(cumsum(rev(Nvessels))), 
-             pos = Nvessels/2 + lead(csum, 1),
-             pos = if_else(is.na(pos), Nvessels/2, pos)) %>%
+      summarise(Nvessels=n_distinct(VesselID), .by = c(COUNTY, Year)) %>%
+      summarise(Nvessels = sum(Nvessels), .by = COUNTY) %>%
+      # mutate(csum = rev(cumsum(rev(Nvessels))), 
+      #        pos = Nvessels/2 + lead(csum, 1),
+      #        pos = if_else(is.na(pos), Nvessels/2, pos)) %>%
       arrange(-Nvessels)
     
     # Static version (Not displayed unless called)
@@ -159,8 +158,8 @@ server <- function(input, output, session) {
   
   output$plotH2<-renderPlotly({
     obs_county_tmp <- dat_sta %>%
-      filter(.$Year >= input$Year[1]) %>%
-      filter(.$Year <= input$Year[2]) %>%
+      filter(Year >= min(input$Year),
+             Year <= max(input$Year)) %>%
       filter(grepl("obs",SampleType,ignore.case = T)) %>%
       
       group_by(COUNTY) %>%
@@ -221,8 +220,8 @@ server <- function(input, output, session) {
   output$NTrips_Obs_Y <- renderValueBox({
     
     NTrips_Obs_Y <- dat_sta %>%
-      filter(.$Year >= input$Year[1]) %>%
-      filter(.$Year <= input$Year[2]) %>%
+      filter(Year >= min(input$Year),
+             Year <= max(input$Year)) %>%
       filter(grepl("obs",SampleType,ignore.case = T)) %>%
       summarise(NTrips=n_distinct(FileName)) %>%
       ungroup() %>%
@@ -240,8 +239,8 @@ server <- function(input, output, session) {
   output$NHauls_Obs_Y <- renderValueBox({
     
     NHauls_Obs_Y <- dat_sta %>%
-      filter(.$Year >= input$Year[1]) %>%
-      filter(.$Year <= input$Year[2]) %>%
+      filter(Year >= min(input$Year),
+             Year <= max(input$Year)) %>%
       filter(grepl("obs",SampleType,ignore.case = T)) %>%
       group_by(FileName) %>%
       summarise(NHauls=n_distinct(EventID)) %>%
@@ -261,14 +260,13 @@ server <- function(input, output, session) {
   output$CREMeasured <- renderValueBox({
     
     CREMeas <- bio %>%
-      filter(CommonName %in% "EDIBLE CRAB UNSEXED") %>%
-      filter(.$Year >= input$Year[1]) %>%
-      filter(.$Year <= input$Year[2]) %>%
-      group_by(CommonName) %>%
-      summarise(Nind=n()) 
-      as.numeric()
-    
-    valueBox(value=CREMeas$Nind, 
+      filter(CommonName %in% "EDIBLE CRAB UNSEXED",
+             Year >= min(input$Year),
+             Year <= max(input$Year),
+             !is.na(Size)) %>%
+      count(CommonName)
+
+    valueBox(value=CREMeas$n, 
              icon = icon(list(src="species/Edible crab.png", width="18%"), 
                          lib="local"),
              subtitle = tags$p("Number of crabs measured by observers",
@@ -281,13 +279,12 @@ server <- function(input, output, session) {
     
     LBEMeas <- bio %>%
       filter(CommonName %in% "EUROPEAN LOBSTER") %>%
-      filter(.$Year >= input$Year[1]) %>%
-      filter(.$Year <= input$Year[2]) %>%
-      group_by(CommonName) %>%
-      summarise(Nind=n()) 
-    as.numeric()
+      filter(Year >= min(input$Year),
+             Year <= max(input$Year),
+             !is.na(Size)) %>%
+      count(CommonName)
     
-    valueBox(value=LBEMeas$Nind, 
+    valueBox(value=LBEMeas$n, 
              subtitle = tags$p("Number of lobsters measured by observers",
                                style = "font-size: 100%;"),
              icon = icon(list(src="species/European lobster.png", width="20%"), 

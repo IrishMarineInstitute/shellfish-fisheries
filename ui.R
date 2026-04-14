@@ -88,7 +88,7 @@ siderbar<- dashboardSidebar(
              ),
              menuItem("Data description",tabName = "Details", icon = icon("info-circle"))
              ),
-    menuItem("Landings",tabName = "landings", icon = icon("chart-bar")),
+    menuItem("Landings",tabName = "landings", icon = icon("chart-line")),
     menuItem("Assessment and Advice",tabName = "Assessment", icon = icon("indent-right",lib="glyphicon"),
              ##menuSubItem("Malin Crab Stock Assessment",tabName = "Malin_Assessment", icon = icon("indent-right",lib="glyphicon")),
              menuSubItem("Bivalve Stocks",tabName = "BivalveAssessment", icon = tags$img(src='species/icon/Bivalve.ico',
@@ -161,7 +161,7 @@ body<-dashboardBody(
                       box(
                         background = "olive", 
                         width = NULL,
-                        #h4("Select year of interest or whole time series:"),
+                        h4("Select year of interest or whole time series:"),
                         br(),
                         column(12,
                                tagList(
@@ -172,12 +172,15 @@ body<-dashboardBody(
                                                  "Year:",
                                                  min = 2013,
                                                  max = maxY,
+                                                 # to force selecting only one year:
+                                                 # value = maxY,
+                                                 # for > 1 year:
                                                  value=c(maxY,maxY),
                                                  round=TRUE,
                                                  sep = "")
                                      )
                                  )
-                               ),
+                               )
                         )
                )
                
@@ -264,7 +267,7 @@ body<-dashboardBody(
                                             "Year:",
                                             min = 2013,
                                             max = maxY,
-                                            value=c(2015,2018),
+                                            value=c(2013,maxY),
                                             round=TRUE,
                                             sep = "")),
                        column(3,checkboxGroupInput('CatchID',
@@ -353,7 +356,7 @@ body<-dashboardBody(
                                             min = 2015,
                                             max = maxY,
                                             round=TRUE,
-                                            value=c(2016,2018),
+                                            value=c(2015, maxY),
                                             sep = ""),
                               sliderInput("Size",
                                           "Size:",
@@ -628,6 +631,12 @@ body<-dashboardBody(
             br(),
             tags$b("Annual Shellfish Stocks and Fisheries Review: an assessment of selected stocks"),
             br(),
+            tags$p(tags$u("2025:"),
+                   tags$a(
+                     "https://oar.marine.ie/handle/10793/2133",
+                     target = "_blank",
+                     href = "https://oar.marine.ie/handle/10793/2133#:~:text=The%20intention%20of%20this%20annual,in%20areas%20designated%20under%20European")
+            ),
             tags$p(tags$u("2024:"),
                    tags$a(
                      "https://oar.marine.ie/handle/10793/2017",
@@ -698,6 +707,12 @@ body<-dashboardBody(
             br(),
             tags$b("Annual Stock Book: Review of Fish Stocks"),
             br(),
+            tags$p(tags$u("2025:"),
+                   tags$a(
+                     "https://oar.marine.ie/handle/10793/2074",
+                     target = "_blank",
+                     href = "https://oar.marine.ie/handle/10793/2074")
+            ),
             tags$p(tags$u("2024:"),
                    tags$a(
                      "https://oar.marine.ie/handle/10793/1995",
