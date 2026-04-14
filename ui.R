@@ -523,9 +523,9 @@ body<-dashboardBody(
                                 
                                 imageOutput("survey.zones")
                          ),
-                         conditionalPanel("input.SpBIDA == 'Cockle' & input.SpBY == '2024'",
-                                          column("Post Fishery Survey", width = 3,
-                                                 imageOutput("survey.zones.PFS")))
+                         column(conditionalPanel("input.SpBIDA == 'Cockle' && (input.SpBY == '2024' || input.SpBY == '2025')", 
+                                                 "Post Fishery Survey"),
+                                width = 3, imageOutput("survey.zones.PFS"))
                        )
               ),
 
@@ -542,7 +542,7 @@ body<-dashboardBody(
                                                      imageOutput("display.size", width = "100%")
                                                  )),
                                 
-                                conditionalPanel("input.SpBIDA == 'Cockle' & input.SpBY == '2024'",
+                                conditionalPanel("input.SpBIDA == 'Cockle' && (input.SpBY == '2024' || input.SpBY == '2025')",
                                                  div("Post Fishery Survey", style = "text-align:right; font-weight:bold;"),
                                                  div(style = "text-align:right; margin-bottom:50px;",
                                                      imageOutput("display.size.PFS", width = "100%")
@@ -554,7 +554,7 @@ body<-dashboardBody(
                                                      imageOutput("display.assessment", width = "100%")
                                                  )),
                                 
-                                conditionalPanel("input.SpBIDA == 'Cockle' & input.SpBY == '2024'",
+                                conditionalPanel("input.SpBIDA == 'Cockle' && (input.SpBY == '2024' || input.SpBY == '2025')",
                                                  div("Post Fishery Survey", style = "text-align:left; font-weight:bold;"),
                                                  div(style = "text-align:left; margin-bottom:50px;",
                                                      imageOutput("display.assessment.PFS", width = "100%")
