@@ -521,44 +521,56 @@ body<-dashboardBody(
                          column(conditionalPanel("input.SpBIDA == 'Cockle'", "Pre Fishery Survey"),
                                 width = 3, 
                                 
-                                imageOutput("survey.zones")
+                                imageOutput("survey.zones", width = "100%", height = "390px")
                          ),
                          column(conditionalPanel("input.SpBIDA == 'Cockle' && (input.SpBY == '2024' || input.SpBY == '2025')", 
                                                  "Post Fishery Survey"),
                                 width = 3, imageOutput("survey.zones.PFS"))
                        )
               ),
-
               tabPanel("Assessment Outputs",
+                       
                        fluidRow(column(width = 10,
-                                       div(tags$p(htmlOutput("Aoutput_text")),
-                                           style = "text-align: justify")
-                       )),
-                       fluidRow(
-                         column(width = 6,
+                                div(tags$p(htmlOutput("Aoutput_text")),
+                                    style = "text-align: justify"))),
+                       
+                       fluidRow(column(width = 6,
+                          # Size distributions
+                                # Cockle-only text
                                 conditionalPanel("input.SpBIDA == 'Cockle'",
-                                                 div("Pre Fishery Survey", style = "text-align:right; font-weight:bold;"),
-                                                 div(style = "text-align:right; margin-bottom:50px;",
-                                                     imageOutput("display.size", width = "100%")
-                                                 )),
+                                  div("Pre Fishery Survey",
+                                      style = "text-align:right; font-weight:bold;")),
                                 
+                                # ALL species
+                                div(style = "text-align:right; margin-bottom:50px;",
+                                    imageOutput("display.size", width = "100%")),
+                                
+                                # Cockle-only post
                                 conditionalPanel("input.SpBIDA == 'Cockle' && (input.SpBY == '2024' || input.SpBY == '2025')",
-                                                 div("Post Fishery Survey", style = "text-align:right; font-weight:bold;"),
-                                                 div(style = "text-align:right; margin-bottom:50px;",
-                                                     imageOutput("display.size.PFS", width = "100%")
-                                                 ))),
+                                  div("Post Fishery Survey",
+                                      style = "text-align:right; font-weight:bold;"),
+                                  div(style = "margin-bottom:50px;",
+                                      imageOutput("display.size.PFS", width = "100%")))
+                         ),
+                         
                          column(width = 4,
+                          # Assessment outputs      
+                                # Cockle-only text
                                 conditionalPanel("input.SpBIDA == 'Cockle'",
-                                                 div("Pre Fishery Survey", style = "text-align:left; font-weight:bold;"),
-                                                 div(style = "text-align:left; margin-bottom:50px;",
-                                                     imageOutput("display.assessment", width = "100%")
-                                                 )),
+                                  div("Pre Fishery Survey",
+                                      style = "text-align:left; font-weight:bold;")),
                                 
+                                # ALL species
+                                div(style = "text-align:left; margin-bottom:50px;",
+                                    imageOutput("display.assessment", width = "100%", height = "390px")),
+                                
+                                # Cockle-only post
                                 conditionalPanel("input.SpBIDA == 'Cockle' && (input.SpBY == '2024' || input.SpBY == '2025')",
-                                                 div("Post Fishery Survey", style = "text-align:left; font-weight:bold;"),
-                                                 div(style = "text-align:left; margin-bottom:50px;",
-                                                     imageOutput("display.assessment.PFS", width = "100%")
-                                                 )))))
+                                  div("Post Fishery Survey",
+                                      style = "text-align:left; font-weight:bold;"),
+                                  div(style = "margin-bottom:50px;",
+                                      imageOutput("display.assessment.PFS", width = "100%")))
+                         )))
             )),
     tabItem(tabName = "CrustaceanAssessment",
             fluidRow(
