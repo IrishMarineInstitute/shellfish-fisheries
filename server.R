@@ -532,7 +532,7 @@ server <- function(input, output, session) {
   })
   
  #Assessment Outputs
- 
+
   # Bivalve assessment
   # Reactive selectInput
   observe({
@@ -591,6 +591,12 @@ server <- function(input, output, session) {
                  ba_a$Area == input$SpBArea,"Outputs"])
   })
   
+  output$Aoutput_text2 <- renderText({
+    paste0(ba_a[ba_a$Year == input$SpBY &
+                  ba_a$Specie == input$SpBIDA &
+                  ba_a$Area == input$SpBArea,"Outputs2"])
+  })
+  
   output$bivalve_image <- renderImage({
     
     image_path1<-file.path("www/species",
@@ -631,6 +637,15 @@ server <- function(input, output, session) {
     
   }, deleteFile = FALSE)
   
+  output$display.assessment.lut <- renderImage({
+    
+    image_path2PFS<-file.path("www/Assessment and advice",
+                              paste0(input$SpBIDA, " (Lutraria)/", input$SpBArea, "/", input$SpBY),
+                              "BiomassMap_from_AbundanceDensityLW.png")
+    return(list(src = image_path2PFS, filetype = "image/png",height="100%"))
+    
+  }, deleteFile = FALSE)
+  
   output$display.size <- renderImage({
     image_path3<-file.path("www/Assessment and advice",
                           paste(input$SpBIDA,input$SpBArea,input$SpBY,sep= "/"), 
@@ -647,6 +662,12 @@ server <- function(input, output, session) {
     return(list(src = image_path3PFS, filetype = "image/png",width="100%"))
   }, deleteFile = FALSE)
   
+  output$display.size.lut <- renderImage({
+    image_path3PFS<-file.path("www/Assessment and advice",
+                              paste0(input$SpBIDA, " (Lutraria)/", input$SpBArea, "/", input$SpBY),
+                              "Size_distribution_abDensity.png")
+    return(list(src = image_path3PFS, filetype = "image/png",width="100%"))
+  }, deleteFile = FALSE)
   
   # Crustaceans
   observe({

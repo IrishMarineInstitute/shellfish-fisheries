@@ -572,8 +572,25 @@ body<-dashboardBody(
                                   div("Post Fishery Survey",
                                       style = "text-align:left; font-weight:bold;"),
                                   div(style = "margin-bottom:50px;",
-                                      imageOutput("display.assessment.PFS", width = "100%")))
-                         )))
+                                      imageOutput("display.assessment.PFS", width = "100%")))),
+                         
+                         # =========================
+                         # text block 2 (to include Lutraria in razor section)
+                         conditionalPanel("input.SpBIDA == 'Razor Clams' && input.SpBArea == 'South Irish Sea Rosslare' && input.SpBY == '2025'",
+                           fluidRow(column(width = 10,
+                               div(tags$p(htmlOutput("Aoutput_text2")),
+                                 style = "text-align: justify; margin-top:30px; margin-left:20px")))),
+                         
+                         # image block 2 (to include Lutraria in razor section)
+                         conditionalPanel("input.SpBIDA == 'Razor Clams' && input.SpBArea == 'South Irish Sea Rosslare' && input.SpBY == '2025'",
+                           fluidRow(column(width = 6,
+                               div(style = "text-align:right; margin-bottom:50px; margin-left:20px",
+                                 imageOutput("display.size.lut", width = "100%"))),
+                             
+                             column(width = 4,
+                               div(style = "text-align:left; margin-bottom:50px;",
+                                 imageOutput("display.assessment.lut", width = "100%")))))
+                         ))
             )),
     tabItem(tabName = "CrustaceanAssessment",
             fluidRow(
