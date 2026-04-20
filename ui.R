@@ -497,7 +497,7 @@ body<-dashboardBody(
                                          style="text-align: justify")
                        ))
               ),
-              tabPanel("Stock summary",
+              tabPanel("Stock Summary",
                        fluidRow(
                          column(width = 6, 
                                 h3("The Fishery"),
@@ -616,7 +616,7 @@ body<-dashboardBody(
             tabsetPanel(
               tabPanel("Management Advice",
                        htmlOutput("C_ManagementAdvice")),
-              tabPanel("Stock summary",
+              tabPanel("Stock Summary",
                        fluidRow(
                          column(12,
                                 htmlOutput("C_StockSummary")
